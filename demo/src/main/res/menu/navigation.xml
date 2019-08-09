@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_tab1"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:orderInCategory="0"
+        android:title="@string/tab_base_info"/>
+
+    <item
+        android:id="@+id/navigation_tab2"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:orderInCategory="1"
+        android:title="@string/tab_user_banding"/>
+
+    <item
+        android:id="@+id/navigation_tab3"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:orderInCategory="2"
+        android:title="@string/tab_push_config"/>
+
+</menu>

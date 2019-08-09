@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/oppo_green</color>
+    <color name="colorPrimaryDark">@color/oppo_green_press</color>
+    <color name="colorAccent">@color/oppo_green</color>
+
+    <color name="bottomIconColor_normal">@color/oppo_green_press</color><!--底部tab颜色-->
+    <color name="bottomIconColor_select">@color/oppo_green_press</color><!--底部tab选中后的颜色-->
+    <color name="actionBarColor">@color/oppo_gray</color><!--actionbar颜色-->
+
+    <color name="oppo_white">#fafafa</color>
+    <color name="oppo_white_press">#e7e7e7</color>
+    <color name="oppo_line_divider">#DEDEDE</color>
+    <color name="oppo_gray">#C2C5C9</color>
+    <color name="oppo_green">#11CD96</color>
+    <color name="oppo_green_disable">#B7F0DF</color>
+    <color name="oppo_green_press">#0FBF8A</color>
+    <color name="oppo_default_text_col">#333333</color>
+</resources>
