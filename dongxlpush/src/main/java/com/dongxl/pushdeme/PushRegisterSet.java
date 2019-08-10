@@ -21,6 +21,7 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -241,7 +242,7 @@ public class PushRegisterSet {
      * @param context
      */
     private static void jpushRegisterInit(Context context) {
-        JPushInterface.setDebugMode(true);
+        JPushInterface.setDebugMode(BuildConfig.DEBUG);
         JPushInterface.init(context);
     }
 
@@ -624,7 +625,14 @@ public class PushRegisterSet {
                 //不支持
                 break;
             case PushConstants.PushPlatform.PLATFORM_JPSUH:
-                //极光 不支持
+                //极光
+                Set<Integer> days = new HashSet<Integer>();
+                days.add(1);//周日为0,周一为1,以此类推
+                days.add(2);
+                days.add(3);
+                days.add(4);
+                days.add(5);
+                JPushInterface.setPushTime(context, days, startHour, endHour);
                 break;
             default:
                 break;

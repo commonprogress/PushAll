@@ -8,8 +8,6 @@ public class PushConstants {
     //此TAG在adb logcat中检索自己所需要的信息， 只需在命令行终端输入 adb logcat | grep
     public static final String XIAOMI_TAG = BuildConfig.APPLICATION_ID;
 
-    public static final String ACTION_PUSHRECEIVESERVICE = "com.dongxl.pushdeme.action.startPushReceiveService";
-
     //oppp
     public static final String OPPO_APP_ID = BuildConfig.OPPOPUSH_APPID;
     public static final String OPPO_APP_KEY = BuildConfig.OPPOPUSH_APPKEY;
