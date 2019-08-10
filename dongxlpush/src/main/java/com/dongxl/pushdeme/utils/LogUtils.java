@@ -1,7 +1,3 @@
-/**
- * Secret
- * Copyright (C) 2019 Secret
- */
 package com.dongxl.pushdeme.utils;
 
 import android.util.Log;

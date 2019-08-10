@@ -1,27 +1,9 @@
-/**
- * Wire
- * Copyright (C) 2019 Wire Swiss GmbH
- * <p>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.dongxl.pushdeme;
 
 public class PushConstants {
 
-    //2882303761517172047
+    //小米
     public static final String XIAOMI_APP_ID = BuildConfig.XIAOMIPUSH_APPID;
-    //5331717244047
     public static final String XIAOMI_APP_KEY = BuildConfig.XIAOMIPUSH_APPKEY;
     //此TAG在adb logcat中检索自己所需要的信息， 只需在命令行终端输入 adb logcat | grep
     public static final String XIAOMI_TAG = BuildConfig.APPLICATION_ID;
@@ -45,6 +27,7 @@ public class PushConstants {
         public static final String PLATFORM_VIVO = "vivo";
         public static final String PLATFORM_OPPO = "oppo";
         public static final String PLATFORM_FLYME = "flyme";
+        public static final String PLATFORM_JPSUH = "jpush";
         public static final String PLATFORM_OTHER = "other";
     }
 

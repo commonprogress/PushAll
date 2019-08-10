@@ -9,7 +9,6 @@ android {
         versionCode 1
         versionName "1.1"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 JPUSH_APPKEY : "46b514bd1b982739ec4d2f6f",//值来自开发者平台取得的AppKey
                 JPUSH_CHANNEL: "default_developer",

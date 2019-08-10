@@ -31,6 +31,7 @@
     <!--oppo-->
     <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE"/>
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -420,13 +421,7 @@
                 android:name="hwc-theme"
                 android:value="androidhwext:style/Theme.Emui.Translucent" />
         </activity>
-        <activity android:name="com.dongxl.huawei.demo.HwIDActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name="com.dongxl.huawei.demo.HwIDActivity"/>
 
         <activity android:name="com.dongxl.huawei.demo.PayActivity" />
         <activity android:name="com.dongxl.huawei.demo.SnsActivity" />
@@ -439,13 +434,7 @@
             android:name="com.dongxl.oppo.component.OppoDemoActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.dongxl.oppo.component.WebActivity"

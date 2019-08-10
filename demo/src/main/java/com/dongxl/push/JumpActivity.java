@@ -13,7 +13,7 @@ import com.example.jpushdemo.JPushMainActivity;
 import com.example.jpushdemo.R;
 
 public class JumpActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button xiaomiBtn, huaweiBtn, meizuBtn, oppoBtn, vivoBtn, jpushBtn, otherBtn;
+    private Button xiaomiBtn, huaweiBtn, meizuBtn, oppoBtn, vivoBtn, jpushBtn, otherBtn, ziqiBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,14 @@ public class JumpActivity extends AppCompatActivity implements View.OnClickListe
         jpushBtn.setOnClickListener(this);
         otherBtn = findViewById(R.id.button_other);
         otherBtn.setOnClickListener(this);
+        ziqiBtn = findViewById(R.id.button_ziqi);
+        ziqiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                UWhiteListSetting.enterWhiteListSetting(JumpActivity.this);
+                ZiqidongUtils.jumpStartInterface(JumpActivity.this);
+            }
+        });
     }
 
     @Override

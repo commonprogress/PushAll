@@ -1,33 +1,13 @@
-/**
- * Wire
- * Copyright (C) 2019 Wire Swiss GmbH
- * <p>
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.dongxl.pushdeme;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
-import com.dongxl.pushdeme.bean.PushDataBean;
 import com.dongxl.pushdeme.huawei.HMSAgent;
 import com.dongxl.pushdeme.huawei.agent.common.HMSAgentLog;
 import com.dongxl.pushdeme.huawei.agent.common.handler.ConnectHandler;
-import com.dongxl.pushdeme.huawei.agent.push.handler.DeleteTopicHandler;
 import com.dongxl.pushdeme.huawei.agent.push.handler.GetTokenHandler;
-import com.dongxl.pushdeme.huawei.agent.push.handler.SetTopicHandler;
 import com.dongxl.pushdeme.oppo.OppoPushCallback;
 import com.dongxl.pushdeme.utils.LogUtils;
 import com.dongxl.pushdeme.utils.PhoneUtils;
@@ -41,33 +21,29 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 推送相关注册和操作
  */
 public class PushRegisterSet {
     private final static String TAG = PushRegisterSet.class.getSimpleName();
-    /**
-     * 是否支持oppo推送
-     * true 表示手机平台支持PUSH, false表示不支持
-     */
-    private static boolean isSupportOppoPush;
+
     /**
      * oppo 设置操作相关的回调
      */
     private static OppoPushCallback oppoPushCallback;
 
-    /**
-     * 是否支持vivo 推送
-     */
-    private static boolean isSupportVivoPush;
-
-    /**
-     * 是否支持Meizu 推送
-     */
-    private static boolean isSupportMeizuPush;
+    private static void initOppoPushCallback(Context context) {
+        if (null == oppoPushCallback) {
+            oppoPushCallback = new OppoPushCallback(context.getApplicationContext());
+        }
+    }
 
     /**
      * application 初始化注册
@@ -78,19 +54,29 @@ public class PushRegisterSet {
         if (!PhoneUtils.isChinaCountry(application)) {
             return;
         }
-        if (RomUtil.isMiui()) {
-        } else if (RomUtil.isEmui()) {
-            huaweiRegisterInit(application);
-        } else if (RomUtil.isVivo()) {
-            isSupportVivoPush = PushClient.getInstance(application).isSupport();
-        } else if (RomUtil.isOppo()) {
-            oppoRegisterInit(application);
-        } else if (RomUtil.isFlyme()) {
-            isSupportMeizuPush = MzSystemUtils.isMeizu(application);
-        } else {
-            if (RomUtil.isSmartisan()) {
-//                huaweiRegisterInit(application);
-            }
+        String platform = getSupportPushPlatform(application);
+        LogUtils.e(PushConstants.XIAOMI_TAG, "==push applicationInit==platform:" + platform);
+        switch (platform) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                //不需要Application初始化
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                huaweiRegisterInit(application);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                //不需要Application初始化
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                //不需要Application初始化
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                //不需要Application初始化
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                //极光 不需要Application初始化
+                break;
+            default:
+                break;
         }
     }
 
@@ -103,21 +89,28 @@ public class PushRegisterSet {
         if (!PhoneUtils.isChinaCountry(activity)) {
             return;
         }
-        if (RomUtil.isMiui()) {
-            xiaomiRegisterInit(activity);
-        } else if (RomUtil.isEmui()) {
-            huaweiRegisterConnect(activity);
-        } else if (RomUtil.isVivo()) {
-            vivoRegisterInit(activity);
-        } else if (RomUtil.isOppo()) {
-            oppoRegisterConnect(activity);
-        } else if (RomUtil.isFlyme()) {
-            meizuRegisterInit(activity);
-        } else {
-            if (RomUtil.isSmartisan()) {
-//                huaweiRegisterConnect(activity);
-//                xiaomiRegisterInit(activity);
-            }
+        switch (getSupportPushPlatform(activity)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                xiaomiRegisterInit(activity);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                huaweiRegisterConnect(activity);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                oppoRegisterInit(activity);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                vivoRegisterInit(activity);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                meizuRegisterInit(activity);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                //极光
+                jpushRegisterInit(activity);
+                break;
+            default:
+                break;
         }
     }
 
@@ -127,7 +120,6 @@ public class PushRegisterSet {
      * @param context
      */
     public static void xiaomiRegisterInit(Context context) {
-        LogUtils.i(PushConstants.XIAOMI_TAG, "==xiaomiRegisterInit==");
         MiPushClient.registerPush(context, PushConstants.XIAOMI_APP_ID, PushConstants.XIAOMI_APP_KEY);
         LoggerInterface newLogger = new LoggerInterface() {
 
@@ -201,49 +193,37 @@ public class PushRegisterSet {
         HMSAgent.connect(activity, new ConnectHandler() {
             @Override
             public void onConnect(int rst) {
-                LogUtils.i(TAG, "huawei HMS connect end:" + rst);
+                LogUtils.i(TAG, "HMS connect end:" + rst);
                 getRegId(context);
             }
         });
     }
 
     /**
-     * oppo init
-     *
-     * @param context context必须传入当前app的application context
-     */
-    private static void oppoRegisterInit(Context context) {
-        //判断是否手机平台是否支持PUSH
-        isSupportOppoPush = com.coloros.mcssdk.PushManager.isSupportPush(context);
-        if (isSupportOppoPush) {
-            oppoPushCallback = new OppoPushCallback(context);
-        }
-    }
-
-    /**
-     * oppo注册
-     */
-    private static void oppoRegisterConnect(Context context) {
-        if (null == oppoPushCallback) {
-            oppoRegisterInit(context.getApplicationContext());
-        }
-        if (null != oppoPushCallback) {
-            //applicatoinContext必须传入当前app的applicationcontet
-//            oppoPushCallback.setCurrentContext(context.getApplicationContext());
-            com.coloros.mcssdk.PushManager.getInstance().register(context.getApplicationContext(), PushConstants.OPPO_APP_KEY, PushConstants.OPPO_APP_SECRET, oppoPushCallback);//setPushCallback接口也可设置callback
-//            getRegId(context);
-        }
-    }
-
-    /**
-     * vivo 注册和初始化
+     * vivo 注册
      *
      * @param context
      */
     private static void vivoRegisterInit(Context context) {
-        if (isSupportVivoPush) {
-            PushClient.getInstance(context.getApplicationContext()).initialize();
-        }
+        PushClient.getInstance(context.getApplicationContext()).initialize();
+        PushClient.getInstance(context.getApplicationContext()).turnOnPush(new IPushActionListener() {
+            @Override
+            public void onStateChanged(int state) {
+                LogUtils.i(TAG, "vivo 打开push getRegId: end state：" + state + " isSuc:" + (state == 0));
+            }
+        });
+    }
+
+    /**
+     * oppo 注册
+     *
+     * @param context
+     */
+    private static void oppoRegisterInit(Context context) {
+        initOppoPushCallback(context);
+        com.coloros.mcssdk.PushManager.getInstance().register(context.getApplicationContext(),
+                PushConstants.OPPO_APP_KEY, PushConstants.OPPO_APP_SECRET, oppoPushCallback);//setPushCallback接口也可设置callback
+//        getRegId(context);
     }
 
     /**
@@ -252,37 +232,17 @@ public class PushRegisterSet {
      * @param context
      */
     private static void meizuRegisterInit(Context context) {
-        if (!isSupportMeizuPush) {
-            return;
-        }
         com.meizu.cloud.pushsdk.PushManager.register(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY);
     }
 
     /**
-     * 获取当前设置支持的推送类型
+     * 极光推送注册
      *
      * @param context
-     * @return push platform
      */
-    private String getSupportPushPlatform(Context context) {
-        Context mContext = context.getApplicationContext();
-        if (MzSystemUtils.isMeizu(mContext)) {
-            return PushConstants.PushPlatform.PLATFORM_FLYME;
-        } else if (com.coloros.mcssdk.PushManager.isSupportPush(context)) {
-            return PushConstants.PushPlatform.PLATFORM_OPPO;
-        } else if (PushClient.getInstance(context).isSupport()) {
-            return PushConstants.PushPlatform.PLATFORM_VIVO;
-        } else if (RomUtil.isEmui()) {
-            return PushConstants.PushPlatform.PLATFORM_HUAWEI;
-        } else if (RomUtil.isMiui()) {
-            return PushConstants.PushPlatform.PLATFORM_XIAOMI;
-        } else {
-            if (RomUtil.isSmartisan()) {
-//                return PushConstants.PushPlatform.PLATFORM_HUAWEI;
-//                return PushConstants.PushPlatform.PLATFORM_XIAOMI;
-            }
-            return PushConstants.PushPlatform.PLATFORM_OTHER;
-        }
+    private static void jpushRegisterInit(Context context) {
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(context);
     }
 
     /**
@@ -294,46 +254,35 @@ public class PushRegisterSet {
         if (!PhoneUtils.isChinaCountry(context)) {
             return "";
         }
-        if (RomUtil.isMiui()) {
-            return MiPushClient.getRegId(context);
-        } else if (RomUtil.isEmui()) {
-            HMSAgent.Push.getToken(new GetTokenHandler() {
-                @Override
-                public void onResult(int rst) {
-                    LogUtils.i(TAG, "华为 get token: end" + rst);
-                }
-            });
-        } else if (RomUtil.isVivo()) {
-            if (!isSupportVivoPush) {
-                return "";
-            }
-            PushClient.getInstance(context.getApplicationContext()).turnOnPush(new IPushActionListener() {
-
-                @Override
-                public void onStateChanged(int state) {
-                    LogUtils.i(TAG, "vivo 打开push getRegId: end state：" + state + " isSuc:" + (state == 0));
-                }
-            });
-        } else if (RomUtil.isOppo()) {
-            if (null != oppoPushCallback) {
+        String regId = "";
+        switch (getSupportPushPlatform(context)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                regId = MiPushClient.getRegId(context);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                HMSAgent.Push.getToken(new GetTokenHandler() {
+                    @Override
+                    public void onResult(int rst) {
+                        LogUtils.i(TAG, "get token: end" + rst);
+                    }
+                });
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
                 com.coloros.mcssdk.PushManager.getInstance().getRegister();
-            }
-        } else if (RomUtil.isFlyme()) {
-            if (!isSupportMeizuPush) {
-                return "";
-            }
-        } else {
-            if (RomUtil.isSmartisan()) {
-//                HMSAgent.Push.getToken(new GetTokenHandler() {
-//                    @Override
-//                    public void onResult(int rst) {
-//                        LogUtils.i(TAG, "get token: end" + rst);
-//                    }
-//                });
-//                return MiPushClient.getRegId(context);
-            }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                regId = PushClient.getInstance(context.getApplicationContext()).getRegId();
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                //极光
+                regId = JPushInterface.getRegistrationID(context.getApplicationContext());
+                break;
+            default:
+                break;
         }
-        return "";
+        return regId;
     }
 
     /**
@@ -346,35 +295,38 @@ public class PushRegisterSet {
         if (!PhoneUtils.isChinaCountry(context)) {
             return;
         }
-        if (RomUtil.isMiui()) {
-            MiPushClient.setAlias(context, alias, null);
-        } else if (RomUtil.isEmui()) {
-
-        } else if (RomUtil.isVivo()) {
-            if (!isSupportVivoPush) {
-                return;
-            }
-            PushClient.getInstance(context.getApplicationContext()).bindAlias(alias, new IPushActionListener() {
-
-                @Override
-                public void onStateChanged(int state) {
-                    LogUtils.i(TAG, "vivo  setAlias: end state：" + state + " isSuc:" + (state == 0));
-                }
-            });
-        } else if (RomUtil.isOppo()) {
-            if (null != oppoPushCallback) {
+        switch (getSupportPushPlatform(context)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                MiPushClient.setAlias(context, alias, null);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                initOppoPushCallback(context);
                 List<String> list = new ArrayList<>();
                 list.add(alias);
                 com.coloros.mcssdk.PushManager.getInstance().setAliases(list);
-            }
-        } else if (RomUtil.isFlyme()) {
-            if (!isSupportMeizuPush) {
-                return;
-            }
-            com.meizu.cloud.pushsdk.PushManager.subScribeAlias(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), alias);
-        } else {
-            if (RomUtil.isSmartisan()) {
-            }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                //unBindAlias 一天内最多调用 100 次，两次调用的间隔需大于 2s
+                PushClient.getInstance(context.getApplicationContext()).bindAlias(alias, new IPushActionListener() {
+
+                    @Override
+                    public void onStateChanged(int state) {
+                        LogUtils.i(TAG, "vivo  setAlias: end state：" + state + " isSuc:" + (state == 0));
+                    }
+                });
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                com.meizu.cloud.pushsdk.PushManager.subScribeAlias(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), alias);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                //极光
+                JPushInterface.setAlias(context, 1, alias);//也可以同时设置对个，具体看官网
+                break;
+            default:
+                break;
         }
     }
 
@@ -388,33 +340,36 @@ public class PushRegisterSet {
         if (!PhoneUtils.isChinaCountry(context)) {
             return;
         }
-        if (RomUtil.isMiui()) {
-            MiPushClient.unsetAlias(context, alias, null);
-        } else if (RomUtil.isEmui()) {
-
-        } else if (RomUtil.isVivo()) {
-            if (!isSupportVivoPush) {
-                return;
-            }
-            PushClient.getInstance(context.getApplicationContext()).unBindAlias(alias, new IPushActionListener() {
-
-                @Override
-                public void onStateChanged(int state) {
-                    LogUtils.i(TAG, "vivo unsetAlias: end state：" + state + " isSuc:" + (state == 0));
-                }
-            });
-        } else if (RomUtil.isOppo()) {
-            if (null != oppoPushCallback) {
+        switch (getSupportPushPlatform(context)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                MiPushClient.unsetAlias(context, alias, null);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                initOppoPushCallback(context);
                 com.coloros.mcssdk.PushManager.getInstance().unsetAlias(alias);
-            }
-        } else if (RomUtil.isFlyme()) {
-            if (!isSupportMeizuPush) {
-                return;
-            }
-            com.meizu.cloud.pushsdk.PushManager.unSubScribeAlias(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), alias);
-        } else {
-            if (RomUtil.isSmartisan()) {
-            }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                //bindAlias 一天内最多调用 100 次，两次调用的间隔需大于 2s
+                PushClient.getInstance(context.getApplicationContext()).unBindAlias(alias, new IPushActionListener() {
+
+                    @Override
+                    public void onStateChanged(int state) {
+                        LogUtils.i(TAG, "vivo unsetAlias: end state：" + state + " isSuc:" + (state == 0));
+                    }
+                });
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                com.meizu.cloud.pushsdk.PushManager.unSubScribeAlias(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), alias);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                //极光
+                JPushInterface.deleteAlias(context, 2);//也可以同时设置对个，具体看官网
+                break;
+            default:
+                break;
         }
     }
 
@@ -428,25 +383,28 @@ public class PushRegisterSet {
         if (!PhoneUtils.isChinaCountry(context)) {
             return;
         }
-        if (RomUtil.isMiui()) {
-            MiPushClient.setUserAccount(context, account, null);
-        } else if (RomUtil.isEmui()) {
-
-        } else if (RomUtil.isVivo()) {
-            if (!isSupportVivoPush) {
-                return;
-            }
-        } else if (RomUtil.isOppo()) {
-            if (null != oppoPushCallback) {
+        switch (getSupportPushPlatform(context)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                MiPushClient.setUserAccount(context, account, null);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                initOppoPushCallback(context);
                 com.coloros.mcssdk.PushManager.getInstance().setUserAccount(account);
-            }
-        } else if (RomUtil.isFlyme()) {
-            if (!isSupportMeizuPush) {
-                return;
-            }
-        } else {
-            if (RomUtil.isSmartisan()) {
-            }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                //极光 不支持
+                break;
+            default:
+                break;
         }
     }
 
@@ -460,27 +418,30 @@ public class PushRegisterSet {
         if (!PhoneUtils.isChinaCountry(context)) {
             return;
         }
-        if (RomUtil.isMiui()) {
-            MiPushClient.unsetUserAccount(context, account, null);
-        } else if (RomUtil.isEmui()) {
-
-        } else if (RomUtil.isVivo()) {
-            if (!isSupportVivoPush) {
-                return;
-            }
-        } else if (RomUtil.isOppo()) {
-            if (null != oppoPushCallback) {
+        switch (getSupportPushPlatform(context)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                MiPushClient.unsetUserAccount(context, account, null);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                initOppoPushCallback(context);
                 List<String> list = new ArrayList<>();
                 list.add(account);
                 com.coloros.mcssdk.PushManager.getInstance().unsetUserAccounts(list);
-            }
-        } else if (RomUtil.isFlyme()) {
-            if (!isSupportMeizuPush) {
-                return;
-            }
-        } else {
-            if (RomUtil.isSmartisan()) {
-            }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                //极光 不支持
+                break;
+            default:
+                break;
         }
     }
 
@@ -494,44 +455,50 @@ public class PushRegisterSet {
         if (!PhoneUtils.isChinaCountry(context)) {
             return;
         }
-        if (RomUtil.isMiui()) {
-            MiPushClient.subscribe(context, topic, null);
-        } else if (RomUtil.isEmui()) {
-            HMSAgent.Push.setTopic(getTopicMap(topic), new SetTopicHandler() {
-                @Override
-                public void onResult(int rst) {
-                    LogUtils.i(TAG, "huawei setTopic: end" + rst);
-                    PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_TOPIC);
-                    pushData.setTopic(topic);
-                    pushData.setResultCode(rst);
-                    ServiceManager.sendPushDataToService(context, pushData, PushConstants.PushPlatform.PLATFORM_HUAWEI);
-                }
-            });
-        } else if (RomUtil.isVivo()) {
-            if (!isSupportVivoPush) {
-                return;
-            }
-            PushClient.getInstance(context.getApplicationContext()).setTopic(topic, new IPushActionListener() {
-                @Override
-                public void onStateChanged(int state) {
-                    LogUtils.i(TAG, "vivo setTopic: end state：" + state + " isSuc:" + (state == 0));
-                }
-            });
-        } else if (RomUtil.isOppo()) {
-            if (null != oppoPushCallback) {
+        switch (getSupportPushPlatform(context)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                MiPushClient.subscribe(context, topic, null);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                // 以前支持现在已经作废
+//            HMSAgent.Push.setTopic(getTopicMap(topic), new SetTopicHandler() {
+//                @Override
+//                public void onResult(int rst) {
+//                    LogUtils.i(TAG, "setTopic: end" + rst);
+//                    PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_TOPIC);
+//                    pushData.setTopic(topic);
+//                    pushData.setResultCode(rst);
+//                    ServiceManager.sendPushDataToService(context, pushData, PushConstants.PushPlatform.PLATFORM_HUAWEI);
+//                }
+//            });
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                initOppoPushCallback(context);
                 List<String> list = new ArrayList<>();
                 list.add(topic);
                 com.coloros.mcssdk.PushManager.getInstance().setTags(list);
-            }
-        } else if (RomUtil.isFlyme()) {
-            if (!isSupportMeizuPush) {
-                return;
-            }
-            com.meizu.cloud.pushsdk.PushManager.subScribeTags(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), topic);//多个标签 topic1+","+topic2+","+topic3
-        } else {
-            if (RomUtil.isSmartisan()) {
-//                MiPushClient.subscribe(context, topic, null);
-            }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                //delTopic 一天内最多调用 500 次，两次调用的间隔需大于 2s
+                PushClient.getInstance(context.getApplicationContext()).setTopic(topic, new IPushActionListener() {
+                    @Override
+                    public void onStateChanged(int state) {
+                        LogUtils.i(TAG, "vivo setTopic: end state：" + state + " isSuc:" + (state == 0));
+                    }
+                });
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                com.meizu.cloud.pushsdk.PushManager.subScribeTags(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), topic);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                //极光
+                Set<String> topics = new LinkedHashSet<>();
+                topics.add(topic);
+                JPushInterface.setTags(context, 4, topics);
+                JPushInterface.addTags(context, 3, topics); //可以同时设置多个
+                break;
+            default:
+                break;
         }
     }
 
@@ -557,45 +524,52 @@ public class PushRegisterSet {
         if (!PhoneUtils.isChinaCountry(context)) {
             return;
         }
-        if (RomUtil.isMiui()) {
-            MiPushClient.unsubscribe(context, topic, null);
-        } else if (RomUtil.isEmui()) {
-            HMSAgent.Push.deleteTopic(getTopicKeys(topic), new DeleteTopicHandler() {
-                @Override
-                public void onResult(int rst) {
-                    LogUtils.i(TAG, "华为 deleteToken: end" + rst);
-                    PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_UNTOPIC);
-                    pushData.setTopic(topic);
-                    pushData.setResultCode(rst);
-                    ServiceManager.sendPushDataToService(context, pushData, PushConstants.PushPlatform.PLATFORM_HUAWEI);
-                }
-            });
-        } else if (RomUtil.isVivo()) {
-            if (!isSupportVivoPush) {
-                return;
-            }
-            PushClient.getInstance(context.getApplicationContext()).delTopic(topic, new IPushActionListener() {
-
-                @Override
-                public void onStateChanged(int state) {
-                    LogUtils.i(TAG, "vivo unsetTopic: end state：" + state + " isSuc:" + (state == 0));
-                }
-            });
-        } else if (RomUtil.isOppo()) {
-            if (null != oppoPushCallback) {
+        switch (getSupportPushPlatform(context)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                MiPushClient.unsubscribe(context, topic, null);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                // 以前支持现在已经作废
+//            HMSAgent.Push.deleteTopic(getTopicKeys(topic), new DeleteTopicHandler() {
+//                @Override
+//                public void onResult(int rst) {
+//                    LogUtils.i(TAG, "deleteToken: end" + rst);
+//                    PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_UNTOPIC);
+//                    pushData.setTopic(topic);
+//                    pushData.setResultCode(rst);
+//                    ServiceManager.sendPushDataToService(context, pushData, PushConstants.PushPlatform.PLATFORM_HUAWEI);
+//                }
+//            });
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                initOppoPushCallback(context);
                 List<String> list = new ArrayList<>();
                 list.add(topic);
                 com.coloros.mcssdk.PushManager.getInstance().unsetTags(list);
-            }
-        } else if (RomUtil.isFlyme()) {
-            if (!isSupportMeizuPush) {
-                return;
-            }
-            com.meizu.cloud.pushsdk.PushManager.unSubScribeTags(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), topic);
-        } else {
-            if (RomUtil.isSmartisan()) {
-//                MiPushClient.unsubscribe(context, topic, null);
-            }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                //与setTopic 一天内最多调用 500 次，两次调用的间隔需大于 2s
+                PushClient.getInstance(context.getApplicationContext()).delTopic(topic, new IPushActionListener() {
+
+                    @Override
+                    public void onStateChanged(int state) {
+                        LogUtils.i(TAG, "vivo unsetTopic: end state：" + state + " isSuc:" + (state == 0));
+                    }
+                });
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                com.meizu.cloud.pushsdk.PushManager.unSubScribeTags(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), topic);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                //极光
+                Set<String> topics = new LinkedHashSet<>();
+                topics.add(topic);
+                JPushInterface.deleteTags(context, 5, topics);
+                JPushInterface.cleanTags(context, 6);
+
+                break;
+            default:
+                break;
         }
     }
 
@@ -624,16 +598,15 @@ public class PushRegisterSet {
         if (!PhoneUtils.isChinaCountry(context)) {
             return;
         }
-        if (RomUtil.isMiui()) {
-            MiPushClient.setAcceptTime(context, startHour, startMin, endHour, endMin, null);
-        } else if (RomUtil.isEmui()) {
-
-        } else if (RomUtil.isVivo()) {
-            if (!isSupportVivoPush) {
-                return;
-            }
-        } else if (RomUtil.isOppo()) {
-            if (null != oppoPushCallback) {
+        switch (getSupportPushPlatform(context)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                MiPushClient.setAcceptTime(context, startHour, startMin, endHour, endMin, null);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                initOppoPushCallback(context);
                 List<Integer> weekDays = new ArrayList<>();
                 weekDays.add(0);//周日为0,周一为1,以此类推
                 weekDays.add(1);
@@ -643,14 +616,18 @@ public class PushRegisterSet {
                 weekDays.add(5);
                 weekDays.add(6);
                 com.coloros.mcssdk.PushManager.getInstance().setPushTime(weekDays, startHour, startMin, endHour, endMin);
-            }
-        } else if (RomUtil.isFlyme()) {
-            if (!isSupportMeizuPush) {
-                return;
-            }
-        } else {
-            if (RomUtil.isSmartisan()) {
-            }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                //极光 不支持
+                break;
+            default:
+                break;
         }
     }
 
@@ -686,6 +663,30 @@ public class PushRegisterSet {
             default:
                 MiPushClient.clearNotification(context);
                 break;
+        }
+    }
+
+    /**
+     * 获取当前设备支持的推送类型
+     *
+     * @param context
+     * @return push platform
+     */
+    private static String getSupportPushPlatform(Context context) {
+        Context mContext = context.getApplicationContext();
+        if (RomUtil.isMiui()) {
+            return PushConstants.PushPlatform.PLATFORM_XIAOMI;
+        } else if (RomUtil.isEmui()) {
+            return PushConstants.PushPlatform.PLATFORM_HUAWEI;
+        } else if (PushClient.getInstance(mContext).isSupport()) {
+            return PushConstants.PushPlatform.PLATFORM_VIVO;
+        } else if (com.coloros.mcssdk.PushManager.isSupportPush(mContext)) {
+            return PushConstants.PushPlatform.PLATFORM_OPPO;
+        } else if (MzSystemUtils.isMeizu(mContext)) {
+            return PushConstants.PushPlatform.PLATFORM_FLYME;
+        } else {
+            return PushConstants.PushPlatform.PLATFORM_JPSUH;
+//            return PushConstants.PushPlatform.PLATFORM_OTHER;
         }
     }
 }
