@@ -547,21 +547,21 @@ public class PayActivity  extends AgentBaseActivity {
             return;
         } else if (!onTabBtnClickListener(id)) {
             // 如果不是tab切换按钮则处理业务按钮事件 | Handle Business button events without the TAB toggle button
-            switch (id) {
-                case R.id.btn_pay:
-                    pay();
-                    break;
-                case R.id.btn_checkpay:
-                    checkPay();
-                    break;
-                case R.id.btn_getallproductdetail:
-                    getProductDetail("PmsTestProduct0001|PmsTestProduct0002|PmsTestProduct0003|PmsTestProduct0004|PmsTestProduct0005|PmsTestProduct0006");
-                    break;
-                case R.id.btn_purchaseinfo:
-                    getPurchaseInfo(1);
-                    break;
-                default:
-            }
+//            switch (id) {
+//                case R.id.btn_pay:
+//                    pay();
+//                    break;
+//                case R.id.btn_checkpay:
+//                    checkPay();
+//                    break;
+//                case R.id.btn_getallproductdetail:
+//                    getProductDetail("PmsTestProduct0001|PmsTestProduct0002|PmsTestProduct0003|PmsTestProduct0004|PmsTestProduct0005|PmsTestProduct0006");
+//                    break;
+//                case R.id.btn_purchaseinfo:
+//                    getPurchaseInfo(1);
+//                    break;
+//                default:
+//            }
         }
     }
 }

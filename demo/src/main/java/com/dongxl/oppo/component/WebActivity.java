@@ -100,25 +100,25 @@ public class WebActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         String currentUrl = getWebView().getUrl();//当前正在浏览的页面的Url
         LogUtil.d("webview currentUrl:" + currentUrl);
-        switch (item.getItemId()) {
-            case R.id.menu_open_by_browser://在浏览器中打开当前页面
-                try {
-                    Intent intent = Intent.parseUri(currentUrl, Intent.URI_INTENT_SCHEME);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setComponent(null);
-                    intent.setSelector(null);
-                    startActivityIfNeeded(intent, -1);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.menu_copy_url://复制url地址到剪切板
-                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("url", currentUrl));
-                Toast.makeText(this, "已成功复制url到剪切板", Toast.LENGTH_LONG).show();
-                break;
-        }
+//        switch (item.getItemId()) {
+//            case R.id.menu_open_by_browser://在浏览器中打开当前页面
+//                try {
+//                    Intent intent = Intent.parseUri(currentUrl, Intent.URI_INTENT_SCHEME);
+//                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+//                    intent.setAction(Intent.ACTION_VIEW);
+//                    intent.setComponent(null);
+//                    intent.setSelector(null);
+//                    startActivityIfNeeded(intent, -1);
+//                } catch (URISyntaxException e) {
+//                    e.printStackTrace();
+//                }
+//                break;
+//            case R.id.menu_copy_url://复制url地址到剪切板
+//                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+//                clipboardManager.setPrimaryClip(ClipData.newPlainText("url", currentUrl));
+//                Toast.makeText(this, "已成功复制url到剪切板", Toast.LENGTH_LONG).show();
+//                break;
+//        }
         return super.onOptionsItemSelected(item);
     }
 

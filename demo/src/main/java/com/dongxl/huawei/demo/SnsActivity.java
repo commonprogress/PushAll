@@ -158,18 +158,18 @@ public class SnsActivity extends AgentBaseActivity {
             return;
         } else if (!onTabBtnClickListener(id)) {
             // 如果不是tab切换按钮则处理业务按钮事件 | Handle Business button events without the TAB toggle button
-            switch (id) {
-                case R.id.btn_uimsg:
-                    goSnsUI(Constants.UiIntentType.UI_MSG, 0);
-                    break;
-                case R.id.btn_uifriend:
-                    goSnsUI(Constants.UiIntentType.UI_FRIEND, 0);
-                    break;
-                case R.id.btn_sendmsg:
-                    sendMsg();
-                    break;
-                default:
-            }
+//            switch (id) {
+//                case R.id.btn_uimsg:
+//                    goSnsUI(Constants.UiIntentType.UI_MSG, 0);
+//                    break;
+//                case R.id.btn_uifriend:
+//                    goSnsUI(Constants.UiIntentType.UI_FRIEND, 0);
+//                    break;
+//                case R.id.btn_sendmsg:
+//                    sendMsg();
+//                    break;
+//                default:
+//            }
         }
     }
 }

@@ -45,33 +45,33 @@ public class JumpActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
-        Class<?> cls = null;
-        switch (v.getId()) {
-            case R.id.button_xiaomi:
-                cls = XiaomiMainActivity.class;
-                break;
-            case R.id.button_huawei:
-                cls = HuaweiPushActivity.class;
-                break;
-            case R.id.button_meizu:
-                break;
-            case R.id.button_oppo:
-                cls = OppoDemoActivity.class;
-                break;
-            case R.id.button_vivo:
-                break;
-            case R.id.button_jpush:
-                cls = JPushMainActivity.class;
-                break;
-            case R.id.button_other:
-                break;
-            default:
-                break;
-        }
-        if (null != cls) {
-            intent.setClass(this, cls);
-            startActivity(intent);
-        }
+//        Intent intent = new Intent();
+//        Class<?> cls = null;
+//        switch (v.getId()) {
+//            case R.id.button_xiaomi:
+//                cls = XiaomiMainActivity.class;
+//                break;
+//            case R.id.button_huawei:
+//                cls = HuaweiPushActivity.class;
+//                break;
+//            case R.id.button_meizu:
+//                break;
+//            case R.id.button_oppo:
+//                cls = OppoDemoActivity.class;
+//                break;
+//            case R.id.button_vivo:
+//                break;
+//            case R.id.button_jpush:
+//                cls = JPushMainActivity.class;
+//                break;
+//            case R.id.button_other:
+//                break;
+//            default:
+//                break;
+//        }
+//        if (null != cls) {
+//            intent.setClass(this, cls);
+//            startActivity(intent);
+//        }
     }
 }

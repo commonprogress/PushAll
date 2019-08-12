@@ -87,13 +87,13 @@ public class SettingActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.bu_setTime:
-			v.requestFocus();
-			v.requestFocusFromTouch();
-			setPushTime();
-			break;
-		}
+//		switch (v.getId()) {
+//		case R.id.bu_setTime:
+//			v.requestFocus();
+//			v.requestFocusFromTouch();
+//			setPushTime();
+//			break;
+//		}
 	}
 	
 	/**

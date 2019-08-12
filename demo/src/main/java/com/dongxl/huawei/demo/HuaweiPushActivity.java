@@ -133,34 +133,34 @@ public class HuaweiPushActivity extends AgentBaseActivity implements HuaweiPushR
      */
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.btn_push) {
-            // 本页面切换到本页面的按钮事件不处理 | "This page switches to itself" button event does not need to be handled
-            return;
-        } else if (!onTabBtnClickListener(id)) {
-            // 如果不是tab切换按钮则处理业务按钮事件 | Handle Business button events without the TAB toggle button
-            switch (id) {
-                case R.id.btn_gettoken:
-                    getToken();
-                    break;
-                case R.id.btn_deletetoken:
-                    deleteToken();
-                    break;
-                case R.id.btn_getpushstatus:
-                    getPushStatus();
-                    break;
-                case R.id.btn_setnormal:
-                    setReceiveNormalMsg(true);
-                    break;
-                case R.id.btn_setnofify:
-                    setReceiveNotifyMsg(true);
-                    break;
-                case R.id.btn_agreement:
-                    showAgreement();
-                    break;
-                default:
-            }
-        }
+//        int id = v.getId();
+//        if (id == R.id.btn_push) {
+//            // 本页面切换到本页面的按钮事件不处理 | "This page switches to itself" button event does not need to be handled
+//            return;
+//        } else if (!onTabBtnClickListener(id)) {
+//            // 如果不是tab切换按钮则处理业务按钮事件 | Handle Business button events without the TAB toggle button
+//            switch (id) {
+//                case R.id.btn_gettoken:
+//                    getToken();
+//                    break;
+//                case R.id.btn_deletetoken:
+//                    deleteToken();
+//                    break;
+//                case R.id.btn_getpushstatus:
+//                    getPushStatus();
+//                    break;
+//                case R.id.btn_setnormal:
+//                    setReceiveNormalMsg(true);
+//                    break;
+//                case R.id.btn_setnofify:
+//                    setReceiveNotifyMsg(true);
+//                    break;
+//                case R.id.btn_agreement:
+//                    showAgreement();
+//                    break;
+//                default:
+//            }
+//        }
     }
 
     @Override

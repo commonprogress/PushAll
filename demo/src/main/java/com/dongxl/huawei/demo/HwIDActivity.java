@@ -107,21 +107,21 @@ public class HwIDActivity extends AgentBaseActivity implements HuaweiApiClient.C
             return;
         } else if (!onTabBtnClickListener(id)) {
             // 如果不是tab切换按钮则处理业务按钮事件 | Handle Business button events without the TAB toggle button
-            switch (id) {
-                case R.id.btn_connect:
-                    connect();
-                    break;
-                case R.id.btn_signin:
-                    signIn(false);
-                    break;
-                case R.id.btn_forcesignin:
-                    signIn(true);
-                    break;
-                case R.id.btn_signout:
-                    signOut();
-                    break;
-                default:
-            }
+//            switch (id) {
+//                case R.id.btn_connect:
+//                    connect();
+//                    break;
+//                case R.id.btn_signin:
+//                    signIn(false);
+//                    break;
+//                case R.id.btn_forcesignin:
+//                    signIn(true);
+//                    break;
+//                case R.id.btn_signout:
+//                    signOut();
+//                    break;
+//                default:
+//            }
         }
     }
 

@@ -249,11 +249,11 @@ public class OppoDemoActivity extends AppCompatActivity implements TestModeUtil.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_about:
-                startActivity(new Intent(this, AboutActivity.class));
-                break;
-        }
+//        switch (item.getItemId()) {
+//            case R.id.menu_about:
+//                startActivity(new Intent(this, AboutActivity.class));
+//                break;
+//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -289,74 +289,74 @@ public class OppoDemoActivity extends AppCompatActivity implements TestModeUtil.
         } else {
             addLog("点击控件", view.getClass().getSimpleName());
         }
-        try {
-            switch (view.getId()) {
-                //基本信息页面按钮事件
-                case R.id.btn_app_register:
-                    PushManager.getInstance().getRegister();
-                    break;
-                case R.id.btn_app_unregister:
-                    PushManager.getInstance().unRegister();
-                    break;
-                case R.id.btn_check_opush_support:
-                    addLog("isSupportPush", "" + PushManager.isSupportPush(this));
-                    break;
-                case R.id.btn_get_regid:
-                    PushManager.getInstance().getRegister();
-                    break;
-                case R.id.btn_open_notification_setting:
-                    PushManager.getInstance().openNotificationSettings();
-                    break;
-                case R.id.btn_check_appid:
-                    showResult("AppId", AppParam.appId);
-                    showResult("TODO", "功能暂未实现");
-                    break;
-                case R.id.btn_get_push_service_status:
-                    PushManager.getInstance().getPushStatus();
-                    break;
-                case R.id.btn_get_statusbar_status:
-                    PushManager.getInstance().getNotificationStatus();
-                    break;
-                case R.id.btn_get_version_info:
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("McsVerCode:").append(PushManager.getInstance().getPushVersionCode());
-                    sb.append(",McsVerName:").append(PushManager.getInstance().getPushVersionName());
-                    sb.append(",SdkVer:").append(PushManager.getInstance().getSDKVersion());
-                    addLog("Version", sb.toString());
-                    break;
-                //用户绑定页面信息事件
-                case R.id.btn_set_alias:
-                    PushManager.getInstance().setAliases(getAliasOrTopicsList());
-                    break;
-                case R.id.btn_unset_alias:
-                    PushManager.getInstance().unsetAliases(getAliasOrTopicsList());
-                    break;
-                case R.id.btn_get_alias_list:
-                    PushManager.getInstance().getAliases();
-                    break;
-                case R.id.btn_set_topics:
-                    PushManager.getInstance().setTags(getAliasOrTopicsList());
-                    break;
-                case R.id.btn_unset_topics:
-                    PushManager.getInstance().unsetTags(getAliasOrTopicsList());
-                    break;
-                case R.id.btn_get_topic_list:
-                    PushManager.getInstance().getTags();
-                    break;
-                //推送设置页面信息事件
-                case R.id.btn_pause_push:
-                    PushManager.getInstance().pausePush();
-                    break;
-                case R.id.btn_resume_push:
-                    PushManager.getInstance().resumePush();
-                    break;
-                default:
-                    break;
-            }
-        } catch (Exception e) {
-            showResult("Exception", e.getLocalizedMessage());
-            TestModeUtil.addLogString(e.getLocalizedMessage());
-        }
+//        try {
+//            switch (view.getId()) {
+//                //基本信息页面按钮事件
+//                case R.id.btn_app_register:
+//                    PushManager.getInstance().getRegister();
+//                    break;
+//                case R.id.btn_app_unregister:
+//                    PushManager.getInstance().unRegister();
+//                    break;
+//                case R.id.btn_check_opush_support:
+//                    addLog("isSupportPush", "" + PushManager.isSupportPush(this));
+//                    break;
+//                case R.id.btn_get_regid:
+//                    PushManager.getInstance().getRegister();
+//                    break;
+//                case R.id.btn_open_notification_setting:
+//                    PushManager.getInstance().openNotificationSettings();
+//                    break;
+//                case R.id.btn_check_appid:
+//                    showResult("AppId", AppParam.appId);
+//                    showResult("TODO", "功能暂未实现");
+//                    break;
+//                case R.id.btn_get_push_service_status:
+//                    PushManager.getInstance().getPushStatus();
+//                    break;
+//                case R.id.btn_get_statusbar_status:
+//                    PushManager.getInstance().getNotificationStatus();
+//                    break;
+//                case R.id.btn_get_version_info:
+//                    StringBuilder sb = new StringBuilder();
+//                    sb.append("McsVerCode:").append(PushManager.getInstance().getPushVersionCode());
+//                    sb.append(",McsVerName:").append(PushManager.getInstance().getPushVersionName());
+//                    sb.append(",SdkVer:").append(PushManager.getInstance().getSDKVersion());
+//                    addLog("Version", sb.toString());
+//                    break;
+//                //用户绑定页面信息事件
+//                case R.id.btn_set_alias:
+//                    PushManager.getInstance().setAliases(getAliasOrTopicsList());
+//                    break;
+//                case R.id.btn_unset_alias:
+//                    PushManager.getInstance().unsetAliases(getAliasOrTopicsList());
+//                    break;
+//                case R.id.btn_get_alias_list:
+//                    PushManager.getInstance().getAliases();
+//                    break;
+//                case R.id.btn_set_topics:
+//                    PushManager.getInstance().setTags(getAliasOrTopicsList());
+//                    break;
+//                case R.id.btn_unset_topics:
+//                    PushManager.getInstance().unsetTags(getAliasOrTopicsList());
+//                    break;
+//                case R.id.btn_get_topic_list:
+//                    PushManager.getInstance().getTags();
+//                    break;
+//                //推送设置页面信息事件
+//                case R.id.btn_pause_push:
+//                    PushManager.getInstance().pausePush();
+//                    break;
+//                case R.id.btn_resume_push:
+//                    PushManager.getInstance().resumePush();
+//                    break;
+//                default:
+//                    break;
+//            }
+//        } catch (Exception e) {
+//            showResult("Exception", e.getLocalizedMessage());
+//            TestModeUtil.addLogString(e.getLocalizedMessage());
+//        }
     }
 
     /**

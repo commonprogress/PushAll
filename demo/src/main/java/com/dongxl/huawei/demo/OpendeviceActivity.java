@@ -104,15 +104,15 @@ public class OpendeviceActivity extends AgentBaseActivity {
             return;
         } else if (!onTabBtnClickListener(id)) {
             // 如果不是tab切换按钮则处理业务按钮事件 | Handle Business button events without the TAB toggle button
-            switch (id) {
-                case R.id.btn_Oaid:
-                    getOaid();
-                    break;
-//                case R.id.btn_Odid:
-//                    getOdid();
+//            switch (id) {
+//                case R.id.btn_Oaid:
+//                    getOaid();
 //                    break;
-                default:
-            }
+////                case R.id.btn_Odid:
+////                    getOdid();
+////                    break;
+//                default:
+//            }
         }
     }
 }

@@ -21,18 +21,18 @@ public class TimeIntervalDialog extends Dialog implements OnTimeChangedListener 
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.apply:
-                    dismiss();
-                    mTimeIntervalInterface.apply(mStartHour, mStartMinute, mEndHour, mEndMinute);
-                    break;
-                case R.id.cancel:
-                    dismiss();
-                    mTimeIntervalInterface.cancel();
-                    break;
-                default:
-                    break;
-            }
+//            switch (v.getId()) {
+//                case R.id.apply:
+//                    dismiss();
+//                    mTimeIntervalInterface.apply(mStartHour, mStartMinute, mEndHour, mEndMinute);
+//                    break;
+//                case R.id.cancel:
+//                    dismiss();
+//                    mTimeIntervalInterface.cancel();
+//                    break;
+//                default:
+//                    break;
+//            }
         }
     };
 

@@ -88,39 +88,39 @@ public abstract class AgentBaseActivity extends Activity implements View.OnClick
      * @return 是否已经处理 | has been processed
      */
     protected boolean onTabBtnClickListener(int btnId) {
-        switch (btnId) {
-//            case R.id.btn_game:
-//                startActivity(new Intent(this, GameActivity.class));
+//        switch (btnId) {
+////            case R.id.btn_game:
+////                startActivity(new Intent(this, GameActivity.class));
+////                overridePendingTransition(0, 0);
+////                finish();
+////                return true;
+//            case R.id.btn_iap:
+//                startActivity(new Intent(this, PayActivity.class));
 //                overridePendingTransition(0, 0);
 //                finish();
 //                return true;
-            case R.id.btn_iap:
-                startActivity(new Intent(this, PayActivity.class));
-                overridePendingTransition(0, 0);
-                finish();
-                return true;
-            case R.id.btn_id:
-                startActivity(new Intent(this, HwIDActivity.class));
-                overridePendingTransition(0, 0);
-                finish();
-                return true;
-            case R.id.btn_sns:
-                startActivity(new Intent(this, SnsActivity.class));
-                overridePendingTransition(0, 0);
-                finish();
-                return true;
-            case R.id.btn_push:
-                startActivity(new Intent(this, HuaweiPushActivity.class));
-                overridePendingTransition(0, 0);
-                finish();
-                return true;
-            case R.id.btn_opendevice:
-                startActivity(new Intent(this, OpendeviceActivity.class));
-                overridePendingTransition(0, 0);
-                finish();
-                return true;
-            default:
-        }
+//            case R.id.btn_id:
+//                startActivity(new Intent(this, HwIDActivity.class));
+//                overridePendingTransition(0, 0);
+//                finish();
+//                return true;
+//            case R.id.btn_sns:
+//                startActivity(new Intent(this, SnsActivity.class));
+//                overridePendingTransition(0, 0);
+//                finish();
+//                return true;
+//            case R.id.btn_push:
+//                startActivity(new Intent(this, HuaweiPushActivity.class));
+//                overridePendingTransition(0, 0);
+//                finish();
+//                return true;
+//            case R.id.btn_opendevice:
+//                startActivity(new Intent(this, OpendeviceActivity.class));
+//                overridePendingTransition(0, 0);
+//                finish();
+//                return true;
+//            default:
+//        }
 
         return false;
     }

@@ -83,29 +83,29 @@ public class JPushMainActivity extends Activity implements OnClickListener{
 	
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.init:
-			init();
-			break;
-		case R.id.setting:
-			Intent intent = new Intent(JPushMainActivity.this, PushSetActivity.class);
-			startActivity(intent);
-			break;
-		case R.id.stopPush:
-			JPushInterface.stopPush(getApplicationContext());
-			break;
-		case R.id.resumePush:
-			JPushInterface.resumePush(getApplicationContext());
-			break;
-		case R.id.getRegistrationId:
-			String rid = JPushInterface.getRegistrationID(getApplicationContext());
-			if (!rid.isEmpty()) {
-				mRegId.setText("RegId:" + rid);
-			} else {
-				Toast.makeText(this, "Get registration fail, JPush init failed!", Toast.LENGTH_SHORT).show();
-			}
-			break;
-		}
+//		switch (v.getId()) {
+//		case R.id.init:
+//			init();
+//			break;
+//		case R.id.setting:
+//			Intent intent = new Intent(JPushMainActivity.this, PushSetActivity.class);
+//			startActivity(intent);
+//			break;
+//		case R.id.stopPush:
+//			JPushInterface.stopPush(getApplicationContext());
+//			break;
+//		case R.id.resumePush:
+//			JPushInterface.resumePush(getApplicationContext());
+//			break;
+//		case R.id.getRegistrationId:
+//			String rid = JPushInterface.getRegistrationID(getApplicationContext());
+//			if (!rid.isEmpty()) {
+//				mRegId.setText("RegId:" + rid);
+//			} else {
+//				Toast.makeText(this, "Get registration fail, JPush init failed!", Toast.LENGTH_SHORT).show();
+//			}
+//			break;
+//		}
 	}
 	
 	// 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
