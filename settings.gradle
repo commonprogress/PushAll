@@ -1,2 +1,2 @@
 rootProject.name = 'pushdemo'
-include ':demo', ':dongxlpush', ':app'
+include ':dongxlpush', ':app'
