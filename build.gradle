@@ -1,3 +1,4 @@
+apply from: "push_config.gradle"
 buildscript {
 
     repositories {

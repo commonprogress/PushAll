@@ -1,0 +1,23 @@
+ext {
+    main_packagename = "\"com.dongxl.push\""
+    pushreceiveservice = "\"com.dongxl.push.service.PushReceiveService\""
+
+    jpush_pkgname = "com.dongxl.push"
+    jpush_appkey = "46b514bd1b982739ec4d2f6f"
+    jpush_channel = "default_developer"
+
+    huaweipush_appid = "101001991"
+
+    vivopush_appkey = "101001991"
+    vivopush_appid = "101001991"
+
+    xiaomipush_appid = "\"2882303761517172047\""
+    xiaomipush_appkey = "\"5331717244047\""
+
+    oppopush_appid = "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
+    oppopush_appkey = "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
+    oppopush_appsecret = "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
+
+    meizupush_appkey = "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
+    meizupush_appid = "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
+}
