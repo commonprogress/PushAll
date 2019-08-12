@@ -1,3 +1,4 @@
 rootProject.name = 'PushAll'
-include ':app','dongxlpush'
+include ':app'
+//,'dongxlpush'
 
