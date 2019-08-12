@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:replace="android:name,android:allowBackup,android:label,android:icon"
         >
         <service
             android:name=".service.PushReceiveService"

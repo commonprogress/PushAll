@@ -10,12 +10,31 @@ android {
         versionCode 1
         versionName "1.0"
 
+        manifestPlaceholders = [
+                JPUSH_PKGNAME   : "${jpush_pkgname}",//值来自开发者平台取得的AppKey
+                JPUSH_APPKEY    : "${jpush_appkey}",//值来自开发者平台取得的AppKey
+                JPUSH_CHANNEL   : "${jpush_channel}",
+
+                HUAWEIPUSH_APPID: "${huaweipush_appid}", //
+
+                VIVOPUSH_APPKEY : "${vivopush_appkey}",
+                VIVOPUSH_APPID  : "${vivopush_appid}"
+        ]
+        buildConfigField "String", "MAIN_PACKAGENAME", "${main_packagename}"
+        buildConfigField "String", "PUSHRECEIVESERVICE", "${pushreceiveservice}"
+
+        buildConfigField 'String', 'XIAOMIPUSH_APPID', "${xiaomipush_appid}"
+        buildConfigField 'String', 'XIAOMIPUSH_APPKEY', "${xiaomipush_appkey}"
+
+        buildConfigField "String", "OPPOPUSH_APPID", "${oppopush_appid}"
+        buildConfigField "String", "OPPOPUSH_APPKEY", "${oppopush_appkey}"
+        buildConfigField "String", "OPPOPUSH_APPSECRET", "${oppopush_appsecret}"
+
+        buildConfigField "String", "MEIZUPUSH_APPKEY", "${meizupush_appkey}"
+        buildConfigField "String", "MEIZUPUSH_APPID", "${meizupush_appid}"
+
         /*华为推送 如果您的应用不需要设置只支持某些特定语言，则请忽略此步骤。如果您的应用需要设置只支持某些特定语言，请最少要支持en（英文） 和 zh-rCN（简体中文）两种语言*/
 //        resConfigs "en", "zh-rCN"
-
-
-
-
 
         ndk {
             //选择要添加的对应 cpu 类型的 .so 库。
