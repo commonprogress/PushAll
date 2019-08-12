@@ -57,6 +57,12 @@ PushRegisterSet.registerInitPush()注册,可以放在application也可以放在a
 PushReceiveService 推送注册结果就收类，还有推送事件到达类
 ```
 
+
+#### v1.0.0
+
+1. 集成各大厂家推送
+
+
 此项目持续维护中，如有问题 请加QQ：254547297
 ![效果图1](img/C80925D365ADDABBC60EF71DE1C5B152.jpg)
 
