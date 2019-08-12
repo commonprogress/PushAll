@@ -21,7 +21,6 @@
 	        implementation 'com.github.commonprogress:PushAll:Tag'
 	}
 
-
 ```
 ### Maven
 
@@ -42,7 +41,6 @@
 	    <version>Tag</version>
 	</dependency>
 
-
 ```
 
 代码中需要实现的步骤：
@@ -59,6 +57,8 @@ PushRegisterSet.registerInitPush()注册,可以放在application也可以放在a
 PushReceiveService 推送注册结果就收类，还有推送事件到达类
 ```
 
+此项目持续维护中，如有问题 请加QQ：254547297
+![效果图1](img/C80925D365ADDABBC60EF71DE1C5B152.jpg)
 
 
 
