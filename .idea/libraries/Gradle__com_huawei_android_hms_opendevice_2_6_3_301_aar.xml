@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.android.hms:opendevice:2.6.3.301@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/opendevice-2.6.3.301.aar/7f426551bf59a7227c51ea0e3ded975c/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/opendevice-2.6.3.301.aar/7f426551bf59a7227c51ea0e3ded975c/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.android.hms/opendevice/2.6.3.301/651963a8219727702d6217a65d73665087735928/opendevice-2.6.3.301-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
