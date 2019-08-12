@@ -1,9 +1,10 @@
-apply plugin: 'com.android.application'
+//apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId 'com.dongxl.push'
+//        applicationId 'com.dongxl.push'
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
