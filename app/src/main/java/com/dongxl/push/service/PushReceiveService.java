@@ -75,7 +75,7 @@ public class PushReceiveService extends Service {
     private void pushResultOperation(PushDataBean pushData) {
         String platform = pushData.getPlatform();
         int resultType = pushData.getResultType();
-        LogUtils.i(TAG, "pushResultOperation 444:  resultType " + resultType + ", pushData: " + pushData.toString());
+        LogUtils.i(TAG, "pushResultOperation 444:  resultType " + resultType + ", pushData: " + pushData.toString() + ", platform: " + platform);
         switch (resultType) {
             case PushConstants.HandlerWhat.WHAT_THROUGH_MESSAGE:
                 throughMessageReceived(pushData.getThroughMessage(), platform);

@@ -18,7 +18,7 @@ android {
                 JPUSH_PKGNAME   : "com.dongxl.push",//值来自开发者平台取得的AppKey
                 JPUSH_APPKEY    : "46b514bd1b982739ec4d2f6f",//值来自开发者平台取得的AppKey
                 JPUSH_CHANNEL   : "default_developer",
-                HUAWEIPUSH_APPID: "101001991",
+                HUAWEIPUSH_APPID: "101001991", //
                 VIVOPUSH_APPKEY : "101001991",
                 VIVOPUSH_APPID  : "101001991"
         ]
@@ -66,6 +66,6 @@ dependencies {
     /*魅族*/
     implementation 'com.meizu.flyme.internet:push-internal:3.8.3'
 /*极光*/
-    implementation 'cn.jiguang.sdk:jpush:3.3.4'  // 此处以JPush 3.3.4 版本为例。
-    implementation 'cn.jiguang.sdk:jcore:2.1.2'  // 此处以JCore 2.1.2 版本为例。
+//    implementation 'cn.jiguang.sdk:jpush:3.3.4'  // 此处以JPush 3.3.4 版本为例。
+//    implementation 'cn.jiguang.sdk:jcore:2.1.2'  // 此处以JCore 2.1.2 版本为例。
 }
