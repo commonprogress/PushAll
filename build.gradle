@@ -16,6 +16,7 @@ allprojects {
         maven {
             url "https://maven.google.com"
         }
+        maven { url 'https://jitpack.io' }
         maven {url 'http://developer.huawei.com/repo/'}
 //        maven {url 'https://docs.jiguang.cn/jpush/resources/'}
 //        maven {url 'https://docs.jiguang.cn/jpush/client/Android/android_guide/#jcenter'}
