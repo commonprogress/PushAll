@@ -65,7 +65,8 @@
     <!-- Required -->
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
 
-    <application>
+    <application
+        tools:replace="android:name,android:allowBackup,android:label,android:icon,android:value">
 
         <!-- xiaomipush ===start -->
         <!-- 这里将XMPushService和PingReceiver定义在了pushservice进程中，您也可以配置其运行在任意进程。如果没有配置android:process这个属性，那么它们将运行在应用的主进程中。 -->
