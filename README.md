@@ -59,27 +59,30 @@ PushRegisterSet.registerInitPush()注册,可以放在application也可以放在a
 PushReceiveService 推送注册结果就收类，还有推送事件到达类
 ```
 
-#### build.gradle 配置
+#### push_config.gradle 配置
 ```
 /*配置账号相关*/
-        manifestPlaceholders = [
-                JPUSH_PKGNAME   : "com.dongxl.push",//值来自开发者平台取得的AppKey
-                JPUSH_APPKEY    : "46b514bd1b982739ec4d2f6f",//值来自开发者平台取得的AppKey
-                JPUSH_CHANNEL   : "default_developer",
-                HUAWEIPUSH_APPID: "101001991", //
-                VIVOPUSH_APPKEY : "101001991",
-                VIVOPUSH_APPID  : "101001991"
-        ]
-        buildConfigField "String", "MAIN_PACKAGENAME", "\"com.dongxl.push\""
-        buildConfigField "String", "PUSHRECEIVESERVICE", "\"com.dongxl.push.service.PushReceiveService\""
+    main_packagename = "\"com.dongxl.push\""
+    pushreceiveservice = "\"com.dongxl.push.service.PushReceiveService\""
 
-        buildConfigField 'String', 'XIAOMIPUSH_APPID', "\"2882303761517172047\""
-        buildConfigField 'String', 'XIAOMIPUSH_APPKEY', "\"5331717244047\""
-        buildConfigField "String", "OPPOPUSH_APPID", "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
-        buildConfigField "String", "OPPOPUSH_APPKEY", "\"67ZtaSY1EyjZZoYqqYVT6e3X\""
-        buildConfigField "String", "OPPOPUSH_APPSECRET", "\"sK8dkfTwHt11QezBuIO4kjJV\""
-        buildConfigField "String", "MEIZUPUSH_APPKEY", "\"67ZtaSY1EyjZZoYqqYVT6e3X\""
-        buildConfigField "String", "MEIZUPUSH_APPID", "\"sK8dkfTwHt11QezBuIO4kjJV\""
+    jpush_pkgname = "com.dongxl.push"
+    jpush_appkey = "46b514bd1b982739ec4d2f6f"
+    jpush_channel = "default_developer"
+
+    huaweipush_appid = "101001991"
+
+    vivopush_appkey = "101001991"
+    vivopush_appid = "101001991"
+
+    xiaomipush_appid = "\"2882303761517172047\""
+    xiaomipush_appkey = "\"5331717244047\""
+
+    oppopush_appid = "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
+    oppopush_appkey = "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
+    oppopush_appsecret = "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
+
+    meizupush_appkey = "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
+    meizupush_appid = "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
 
 ```
 
