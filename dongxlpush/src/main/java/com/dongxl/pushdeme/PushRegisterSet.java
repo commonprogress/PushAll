@@ -275,6 +275,7 @@ public class PushRegisterSet {
                 regId = PushClient.getInstance(context.getApplicationContext()).getRegId();
                 break;
             case PushConstants.PushPlatform.PLATFORM_FLYME:
+                regId = com.meizu.cloud.pushsdk.PushManager.getPushId(context);
                 break;
             case PushConstants.PushPlatform.PLATFORM_JPSUH:
                 //极光
@@ -651,6 +652,9 @@ public class PushRegisterSet {
             case PushConstants.PushPlatform.PLATFORM_XIAOMI:
                 MiPushClient.clearNotification(context, notifyId);
                 break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                com.meizu.cloud.pushsdk.PushManager.clearNotification(context, notifyId);
+                break;
             default:
                 MiPushClient.clearNotification(context, notifyId);
                 break;
@@ -667,6 +671,9 @@ public class PushRegisterSet {
         switch (platform) {
             case PushConstants.PushPlatform.PLATFORM_XIAOMI:
                 MiPushClient.clearNotification(context);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                com.meizu.cloud.pushsdk.PushManager.clearNotification(context);
                 break;
             default:
                 MiPushClient.clearNotification(context);

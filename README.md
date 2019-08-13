@@ -56,30 +56,39 @@ PushRegisterSet.registerInitPush()注册
 
 ```
 PushRegisterSet.registerInitPush()注册,可以放在application也可以放在app第一个界面中
-PushReceiveService 推送注册结果就收类，还有推送事件到达类
+PushReceiveService 自己实现的推送接收Service 推送注册结果就收类，还有推送事件到达类
 ```
 
-#### build.gradle 配置
+#### push_config.gradle 配置
 ```
 /*配置账号相关*/
-        manifestPlaceholders = [
-                JPUSH_PKGNAME   : "com.dongxl.push",//值来自开发者平台取得的AppKey
-                JPUSH_APPKEY    : "46b514bd1b982739ec4d2f6f",//值来自开发者平台取得的AppKey
-                JPUSH_CHANNEL   : "default_developer",
-                HUAWEIPUSH_APPID: "101001991", //
-                VIVOPUSH_APPKEY : "101001991",
-                VIVOPUSH_APPID  : "101001991"
-        ]
-        buildConfigField "String", "MAIN_PACKAGENAME", "\"com.dongxl.push\""
-        buildConfigField "String", "PUSHRECEIVESERVICE", "\"com.dongxl.push.service.PushReceiveService\""
-
-        buildConfigField 'String', 'XIAOMIPUSH_APPID', "\"2882303761517172047\""
-        buildConfigField 'String', 'XIAOMIPUSH_APPKEY', "\"5331717244047\""
-        buildConfigField "String", "OPPOPUSH_APPID", "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
-        buildConfigField "String", "OPPOPUSH_APPKEY", "\"67ZtaSY1EyjZZoYqqYVT6e3X\""
-        buildConfigField "String", "OPPOPUSH_APPSECRET", "\"sK8dkfTwHt11QezBuIO4kjJV\""
-        buildConfigField "String", "MEIZUPUSH_APPKEY", "\"67ZtaSY1EyjZZoYqqYVT6e3X\""
-        buildConfigField "String", "MEIZUPUSH_APPID", "\"sK8dkfTwHt11QezBuIO4kjJV\""
+        ext {
+            main_packagename = "com.dongxl.push" //程序主包名，选填
+            pushreceiveservice = "com.dongxl.push.service.PushReceiveService" //自己实现的推送接收Service 
+        
+            jpush_appkey = "46b514bd1b982739ec4d2f6f" //极光key 
+            jpush_channel = "default_developer" //极光渠道 默认default_developer
+        
+        //华为
+            huaweipush_appid = "101001991"
+        
+        //vivo
+            vivopush_appkey = "6ab44aea-3c2a-4dd9-94c7-e0e5d0cb4d26"
+            vivopush_appid = "14449"
+        
+        //小米
+            xiaomipush_appid = "2882303761517172047"
+            xiaomipush_appkey = "5331717244047"
+        
+        //oppo
+            oppopush_appid = "bt2M9eaEu4jZZoYqqYVT6e3X"
+            oppopush_appkey = "bt2M9eaEu4jZZoYqqYVT6e3X"
+            oppopush_appsecret = "bt2M9eaEu4jZZoYqqYVT6e3X"
+        
+        //魅族
+            meizupush_appkey = "ae5adce01f6c4fbe9b39d9f7ae3fc1de"
+            meizupush_appid = "123037"
+        }
 
 ```
 
@@ -92,13 +101,55 @@ PushReceiveService 推送注册结果就收类，还有推送事件到达类
 
 1. 集成各大厂家推送
 
+ush_config.gradle 配置各大推送平台key
+
+混淆注意事项：
+
+-dontoptimize
+-dontpreverify
+-ignorewarning
+-keepattributes *Annotation*
+-keepattributes Exceptions
+-keepattributes InnerClasses
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+
+#=================  push  =================
+-dontwarn com.dongxl.pushdeme.**
+-keep class com.dongxl.pushdeme.** { *; }
+
+#====极光====
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
+
+#=================  小米push  =================
+-keepclasseswithmembernames class com.xiaomi.**{*;}
+-keep public class * extends com.xiaomi.mipush.sdk.PushMessageReceiver
+-dontwarn com.xiaomi.push.service.a.a
+
+#=================  华为push  =================
+-keep class com.hianalytics.android.**{*;}
+-keep class com.huawei.updatesdk.**{*;}
+-keep class com.huawei.hms.**{*;}
+-keep class com.huawei.android.hms.agent.**{*;}
+
+#=================  vivo push  =================
+-dontwarn com.vivo.push.**
+-keep class com.vivo.push.**{*; }
+-keep class com.vivo.vms.**{*; }
+-keep class com.jsy.push.vivo.VivoPushReceiver{*;}
+
+#=================  oppo push  =================
+-keep public class * extends android.app.Service
+
+#=================  meizu push  =================
+-dontwarn com.meizu.cloud.pushsdk.**
+-keep class com.meizu.cloud.pushsdk.**{*;}
+
 ********************************************************************************************************
 
 此项目持续维护中，如有问题 请加QQ：254547297
 ![效果图1](img/C80925D365ADDABBC60EF71DE1C5B152.jpg)
-
-
-
-
-
-push_config.gradle 配置各大推送平台key

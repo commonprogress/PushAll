@@ -22,18 +22,23 @@
 
 -dontoptimize
 -dontpreverify
+-ignorewarning
+-keepattributes *Annotation*
+-keepattributes Exceptions
+-keepattributes InnerClasses
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+
+#=================  push  =================
+-dontwarn com.dongxl.pushdeme.**
+-keep class com.dongxl.pushdeme.** { *; }
+
 #====极光====
 -dontwarn cn.jpush.**
 -keep class cn.jpush.** { *; }
 -keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
-
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
-
-#==================gson && protobuf==========================
--dontwarn com.google.**
--keep class com.google.gson.** {*;}
--keep class com.google.protobuf.** {*;}
 
 #=================  小米push  =================
 -keepclasseswithmembernames class com.xiaomi.**{*;}
@@ -45,7 +50,6 @@
 -keep class com.huawei.updatesdk.**{*;}
 -keep class com.huawei.hms.**{*;}
 -keep class com.huawei.android.hms.agent.**{*;}
--keep class com.jsy.push.huawei.HMSAgent
 
 #=================  vivo push  =================
 -dontwarn com.vivo.push.**
@@ -55,3 +59,7 @@
 
 #=================  oppo push  =================
 -keep public class * extends android.app.Service
+
+#=================  meizu push  =================
+-dontwarn com.meizu.cloud.pushsdk.**
+-keep class com.meizu.cloud.pushsdk.**{*;}
