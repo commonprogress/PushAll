@@ -110,8 +110,10 @@ https://github.com/lingduzuobiao123/PushSenderSample
 
 1. 集成各大厂家推送
 
-混淆注意事项：
 
+#### 混淆注意事项：
+
+```
 -dontoptimize
 -dontpreverify
 -ignorewarning
@@ -155,6 +157,8 @@ https://github.com/lingduzuobiao123/PushSenderSample
 #=================  meizu push  =================
 -dontwarn com.meizu.cloud.pushsdk.**
 -keep class com.meizu.cloud.pushsdk.**{*;}
+
+```
 
 ********************************************************************************************************
 
