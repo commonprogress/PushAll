@@ -11,29 +11,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        /*配置账号相关*/
-        manifestPlaceholders = [
-                JPUSH_PKGNAME   : "com.dongxl.push",//值来自开发者平台取得的AppKey
-                JPUSH_APPKEY    : "46b514bd1b982739ec4d2f6f",//值来自开发者平台取得的AppKey
-                JPUSH_CHANNEL   : "default_developer",
-                HUAWEIPUSH_APPID: "101001991", //
-                VIVOPUSH_APPKEY : "101001991",
-                VIVOPUSH_APPID  : "101001991"
-        ]
-        buildConfigField "String", "MAIN_PACKAGENAME", "\"com.dongxl.push\""
-        buildConfigField "String", "PUSHRECEIVESERVICE", "\"com.dongxl.push.service.PushReceiveService\""
-
-        buildConfigField 'String', 'XIAOMIPUSH_APPID', "\"2882303761517172047\""
-        buildConfigField 'String', 'XIAOMIPUSH_APPKEY', "\"5331717244047\""
-        buildConfigField "String", "OPPOPUSH_APPID", "\"bt2M9eaEu4jZZoYqqYVT6e3X\""
-        buildConfigField "String", "OPPOPUSH_APPKEY", "\"67ZtaSY1EyjZZoYqqYVT6e3X\""
-        buildConfigField "String", "OPPOPUSH_APPSECRET", "\"sK8dkfTwHt11QezBuIO4kjJV\""
-        buildConfigField "String", "MEIZUPUSH_APPKEY", "\"67ZtaSY1EyjZZoYqqYVT6e3X\""
-        buildConfigField "String", "MEIZUPUSH_APPID", "\"sK8dkfTwHt11QezBuIO4kjJV\""
-
-
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -47,7 +26,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'

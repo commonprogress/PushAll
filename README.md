@@ -13,6 +13,7 @@
 		repositories {
 			...
 			maven { url 'https://jitpack.io' }
+			maven { url 'http://developer.huawei.com/repo/' }
 		}
 	}
 

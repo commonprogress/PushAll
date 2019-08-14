@@ -8,6 +8,7 @@ package com.dongxl.pushdeme.huawei;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.dongxl.pushdeme.huawei.agent.common.HMSSharedUtils;
 import com.huawei.hms.support.api.push.PushReceiver;
 import com.dongxl.pushdeme.PushConstants;
 import com.dongxl.pushdeme.ServiceManager;
@@ -73,6 +74,7 @@ public class HuaweiPushReceiver extends PushReceiver {
         String reason = "belongId is:" + belongId + " Token is:" + token;
         pushData.setReason(reason);
         sendPushDataToService(context, pushData);
+        HMSSharedUtils.saveHuaweiToken(context, token);
         LogUtils.i(TAG, "华为onToken is called. 111: log==" + reason + "==extras==" + extras.toString());
     }
 

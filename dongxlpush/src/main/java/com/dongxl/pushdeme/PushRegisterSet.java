@@ -3,18 +3,22 @@ package com.dongxl.pushdeme;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.dongxl.pushdeme.huawei.HMSAgent;
 import com.dongxl.pushdeme.huawei.agent.common.HMSAgentLog;
+import com.dongxl.pushdeme.huawei.agent.common.HMSSharedUtils;
 import com.dongxl.pushdeme.huawei.agent.common.handler.ConnectHandler;
 import com.dongxl.pushdeme.huawei.agent.push.handler.GetTokenHandler;
 import com.dongxl.pushdeme.oppo.OppoPushCallback;
 import com.dongxl.pushdeme.utils.LogUtils;
 import com.dongxl.pushdeme.utils.PhoneUtils;
 import com.dongxl.pushdeme.utils.RomUtil;
+import com.dongxl.pushdeme.vivo.VivoPushOperation;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.vivo.push.IPushActionListener;
 import com.vivo.push.PushClient;
+import com.vivo.push.util.NotifyAdapterUtil;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -31,6 +35,11 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * 推送相关注册和操作
+ * 小米: 所有设置只支持单一设置 不支持一次设置多个
+ * 华为: 没有设置功能
+ * 魅族:      其他是单一设置 tags 标签名称，多个逗号隔离，每个标签不能超过 20 个字符，限 100 个
+ * oppo:  设置都支持多个，但方法都已经标签过时了
+ * vivo: 所有设置只支持单一设置 不支持一次设置多个
  */
 public class PushRegisterSet {
     private final static String TAG = PushRegisterSet.class.getSimpleName();
@@ -56,7 +65,7 @@ public class PushRegisterSet {
             return;
         }
         String platform = getSupportPushPlatform(application);
-        LogUtils.e(PushConstants.XIAOMI_TAG, "==push applicationInit==platform:" + platform);
+        LogUtils.i(PushConstants.XIAOMI_TAG, "==push applicationInit==platform:" + platform);
         switch (platform) {
             case PushConstants.PushPlatform.PLATFORM_XIAOMI:
                 //不需要Application初始化
@@ -195,7 +204,19 @@ public class PushRegisterSet {
             @Override
             public void onConnect(int rst) {
                 LogUtils.i(TAG, "HMS connect end:" + rst);
-                getRegId(context);
+                getHuaweiPushToken();
+            }
+        });
+    }
+
+    /**
+     * 获取华为的push token
+     */
+    private static void getHuaweiPushToken() {
+        HMSAgent.Push.getToken(new GetTokenHandler() {
+            @Override
+            public void onResult(int rst) {
+                LogUtils.i(TAG, "get token: end" + rst);
             }
         });
     }
@@ -261,12 +282,7 @@ public class PushRegisterSet {
                 regId = MiPushClient.getRegId(context);
                 break;
             case PushConstants.PushPlatform.PLATFORM_HUAWEI:
-                HMSAgent.Push.getToken(new GetTokenHandler() {
-                    @Override
-                    public void onResult(int rst) {
-                        LogUtils.i(TAG, "get token: end" + rst);
-                    }
-                });
+                regId = HMSSharedUtils.getHuaweiToken(context);
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
                 com.coloros.mcssdk.PushManager.getInstance().getRegister();
@@ -312,13 +328,7 @@ public class PushRegisterSet {
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //unBindAlias 一天内最多调用 100 次，两次调用的间隔需大于 2s
-                PushClient.getInstance(context.getApplicationContext()).bindAlias(alias, new IPushActionListener() {
-
-                    @Override
-                    public void onStateChanged(int state) {
-                        LogUtils.i(TAG, "vivo  setAlias: end state：" + state + " isSuc:" + (state == 0));
-                    }
-                });
+                new VivoPushOperation().bindAlias(context, alias);
                 break;
             case PushConstants.PushPlatform.PLATFORM_FLYME:
                 com.meizu.cloud.pushsdk.PushManager.subScribeAlias(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), alias);
@@ -355,13 +365,7 @@ public class PushRegisterSet {
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //bindAlias 一天内最多调用 100 次，两次调用的间隔需大于 2s
-                PushClient.getInstance(context.getApplicationContext()).unBindAlias(alias, new IPushActionListener() {
-
-                    @Override
-                    public void onStateChanged(int state) {
-                        LogUtils.i(TAG, "vivo unsetAlias: end state：" + state + " isSuc:" + (state == 0));
-                    }
-                });
+                new VivoPushOperation().unBindAlias(context, alias);
                 break;
             case PushConstants.PushPlatform.PLATFORM_FLYME:
                 com.meizu.cloud.pushsdk.PushManager.unSubScribeAlias(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), alias);
@@ -451,19 +455,23 @@ public class PushRegisterSet {
      * 设置标签
      *
      * @param context
-     * @param topic
+     * @param topic   topic和topics必有一个为空 优先用topic
+     * @param topics
+     * @return 是否支持设置，true 支持
      */
-    public static void setTopic(final Context context, final String topic) {
+    public static boolean setTopic(final Context context, final String topic/*, final List<String> topics*/) {
         if (!PhoneUtils.isChinaCountry(context)) {
-            return;
+            return false;
         }
+        boolean isSupport = false;
         switch (getSupportPushPlatform(context)) {
             case PushConstants.PushPlatform.PLATFORM_XIAOMI:
                 MiPushClient.subscribe(context, topic, null);
+                isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_HUAWEI:
                 // 以前支持现在已经作废
-//            HMSAgent.Push.setTopic(getTopicMap(topic), new SetTopicHandler() {
+//            HMSAgent.Push.setTopic(getTopicMap(topic, topics), new SetTopicHandler() {
 //                @Override
 //                public void onResult(int rst) {
 //                    LogUtils.i(TAG, "setTopic: end" + rst);
@@ -473,46 +481,68 @@ public class PushRegisterSet {
 //                    ServiceManager.sendPushDataToService(context, pushData, PushConstants.PushPlatform.PLATFORM_HUAWEI);
 //                }
 //            });
+                isSupport = false;
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
                 initOppoPushCallback(context);
-                List<String> list = new ArrayList<>();
-                list.add(topic);
-                com.coloros.mcssdk.PushManager.getInstance().setTags(list);
+                com.coloros.mcssdk.PushManager.getInstance().setTags(getTopicKeys(topic/*, topics*/));
+                isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //delTopic 一天内最多调用 500 次，两次调用的间隔需大于 2s
-                PushClient.getInstance(context.getApplicationContext()).setTopic(topic, new IPushActionListener() {
-                    @Override
-                    public void onStateChanged(int state) {
-                        LogUtils.i(TAG, "vivo setTopic: end state：" + state + " isSuc:" + (state == 0));
-                    }
-                });
+                new VivoPushOperation().setTopic(context, topic);
+                isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_FLYME:
-                com.meizu.cloud.pushsdk.PushManager.subScribeTags(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), topic);
+                String tags = !TextUtils.isEmpty(topic) ? topic : listToString(/*topics*/);
+                com.meizu.cloud.pushsdk.PushManager.subScribeTags(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), tags);
+                isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_JPSUH:
                 //极光
-                Set<String> topics = new LinkedHashSet<>();
-                topics.add(topic);
-                JPushInterface.setTags(context, 4, topics);
-                JPushInterface.addTags(context, 3, topics); //可以同时设置多个
+                Set<String> jTags = new LinkedHashSet<>();
+                jTags.add(topic);
+//                JPushInterface.setTags(context, 4, jTags);
+                JPushInterface.addTags(context, 3, jTags); //可以同时设置多个
+                isSupport = true;
                 break;
             default:
                 break;
         }
+        return isSupport;
+    }
+
+    private static String listToString(/*List<String> list*/) {
+        /*int size = null == list ? 0 : list.size();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            sb.append(list.get(i));
+            if (i != size - 1) {
+                sb.append(",");
+            }
+        }
+        return sb.toString();*/
+        return "";
     }
 
     /**
      * 获取添加的topic集合
      *
-     * @param topic
+     * @param topic  topic和topics必有一个为空 优先用topic
+     * @param topics
      * @return
      */
-    private static Map<String, String> getTopicMap(String topic) {
+    private static Map<String, String> getTopicMap(String topic/*, List<String> topics*/) {
         Map<String, String> map = new HashMap<>();
-        map.put(topic, topic);
+        if (!TextUtils.isEmpty(topic)) {
+            map.put(topic, topic);
+        }
+//        else if (null != topics) {
+//            for (int i = 0; i < topics.size(); i++) {
+//                String value = topics.get(i);
+//                map.put(value, value);
+//            }
+//        }
         return map;
     }
 
@@ -520,19 +550,23 @@ public class PushRegisterSet {
      * 撤销标签
      *
      * @param context
-     * @param topic
+     * @param topic   topic和topics必有一个为空 优先用topic
+     * @param topics
+     * @return true 支持取消设置
      */
-    public static void unsetTopic(final Context context, final String topic) {
+    public static boolean unsetTopic(final Context context, final String topic/*, final List<String> topics*/) {
         if (!PhoneUtils.isChinaCountry(context)) {
-            return;
+            return false;
         }
+        boolean isSupport = false;
         switch (getSupportPushPlatform(context)) {
             case PushConstants.PushPlatform.PLATFORM_XIAOMI:
                 MiPushClient.unsubscribe(context, topic, null);
+                isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_HUAWEI:
                 // 以前支持现在已经作废
-//            HMSAgent.Push.deleteTopic(getTopicKeys(topic), new DeleteTopicHandler() {
+//            HMSAgent.Push.deleteTopic(getTopicKeys(topic, topics), new DeleteTopicHandler() {
 //                @Override
 //                public void onResult(int rst) {
 //                    LogUtils.i(TAG, "deleteToken: end" + rst);
@@ -542,48 +576,52 @@ public class PushRegisterSet {
 //                    ServiceManager.sendPushDataToService(context, pushData, PushConstants.PushPlatform.PLATFORM_HUAWEI);
 //                }
 //            });
+                isSupport = false;
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
                 initOppoPushCallback(context);
-                List<String> list = new ArrayList<>();
-                list.add(topic);
-                com.coloros.mcssdk.PushManager.getInstance().unsetTags(list);
+                com.coloros.mcssdk.PushManager.getInstance().unsetTags(getTopicKeys(topic/*, topics*/));
+                isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //与setTopic 一天内最多调用 500 次，两次调用的间隔需大于 2s
-                PushClient.getInstance(context.getApplicationContext()).delTopic(topic, new IPushActionListener() {
-
-                    @Override
-                    public void onStateChanged(int state) {
-                        LogUtils.i(TAG, "vivo unsetTopic: end state：" + state + " isSuc:" + (state == 0));
-                    }
-                });
+                new VivoPushOperation().delTopic(context, topic);
+                isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_FLYME:
-                com.meizu.cloud.pushsdk.PushManager.unSubScribeTags(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), topic);
+                String tags = !TextUtils.isEmpty(topic) ? topic : listToString(/*topics*/);
+                com.meizu.cloud.pushsdk.PushManager.unSubScribeTags(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), tags);
+                isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_JPSUH:
                 //极光
-                Set<String> topics = new LinkedHashSet<>();
-                topics.add(topic);
-                JPushInterface.deleteTags(context, 5, topics);
-                JPushInterface.cleanTags(context, 6);
-
+                Set<String> jTags = new LinkedHashSet<>();
+                jTags.add(topic);
+                JPushInterface.deleteTags(context, 5, jTags);
+//                JPushInterface.cleanTags(context, 6);
+                isSupport = true;
                 break;
             default:
                 break;
         }
+        return isSupport;
     }
 
     /**
      * 获取删除的topic key集合
      *
-     * @param topic
+     * @param topic  topic和topics必有一个为空 优先用topic
+     * @param topics
      * @return
      */
-    private static List<String> getTopicKeys(String topic) {
+    private static List<String> getTopicKeys(String topic/*, List<String> topics*/) {
         List<String> keys = new ArrayList<>();
-        keys.add(topic);
+        if (!TextUtils.isEmpty(topic)) {
+            keys.add(topic);
+        }
+        /*else if (null != topics) {
+            keys.addAll(topics);
+        }*/
         return keys;
     }
 
@@ -652,8 +690,20 @@ public class PushRegisterSet {
             case PushConstants.PushPlatform.PLATFORM_XIAOMI:
                 MiPushClient.clearNotification(context, notifyId);
                 break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                NotifyAdapterUtil.setNotifyId(notifyId);
+                NotifyAdapterUtil.cancelNotify(context);
+                break;
             case PushConstants.PushPlatform.PLATFORM_FLYME:
                 com.meizu.cloud.pushsdk.PushManager.clearNotification(context, notifyId);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
                 break;
             default:
                 MiPushClient.clearNotification(context, notifyId);
@@ -672,8 +722,19 @@ public class PushRegisterSet {
             case PushConstants.PushPlatform.PLATFORM_XIAOMI:
                 MiPushClient.clearNotification(context);
                 break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                //不支持
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                NotifyAdapterUtil.cancelNotify(context);
+                break;
             case PushConstants.PushPlatform.PLATFORM_FLYME:
                 com.meizu.cloud.pushsdk.PushManager.clearNotification(context);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
                 break;
             default:
                 MiPushClient.clearNotification(context);

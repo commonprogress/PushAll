@@ -3,12 +3,13 @@ package com.dongxl.push;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.dongxl.pushdeme.PushRegisterSet;
 
 import java.util.List;
 
-public class DongApplication extends Application {
+public class DongApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();

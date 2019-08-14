@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.dongxl.push.uitls.UWhiteListSetting;
+import com.dongxl.push.uitls.ZiqiManager;
 import com.dongxl.pushdeme.PushRegisterSet;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,10 +19,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.bottom).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.bottom1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PushRegisterSet.registerInitPush(MainActivity.this);
+            }
+        });
+        findViewById(R.id.bottom2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UWhiteListSetting.enterWhiteListSetting(MainActivity.this);
+//                ZiqiManager.jumpStartInterface(MainActivity.this);
             }
         });
         checkRequestPermissions();

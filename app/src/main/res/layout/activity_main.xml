@@ -15,12 +15,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/bottom"
+        android:id="@+id/bottom1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="初始化注册"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview" />
+
+    <Button
+        android:id="@+id/bottom2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="自启管理"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bottom1" />
 
 
 </android.support.constraint.ConstraintLayout>
