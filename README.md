@@ -60,13 +60,14 @@ PushRegisterSet.registerInitPush()注册,可以放在application也可以放在a
 PushReceiveService 自己实现的推送接收Service 推送注册结果就收类，还有推送事件到达类
 ```
 
-#### push_config.gradle 配置
+#### push_config.gradle 配置各大推送平台key
 ```
 /*配置账号相关*/
         ext {
             main_packagename = "com.dongxl.push" //程序主包名，选填
             pushreceiveservice = "com.dongxl.push.service.PushReceiveService" //自己实现的推送接收Service 
-        
+            
+        //极光
             jpush_appkey = "46b514bd1b982739ec4d2f6f" //极光key 
             jpush_channel = "default_developer" //极光渠道 默认default_developer
         
@@ -93,6 +94,9 @@ PushReceiveService 自己实现的推送接收Service 推送注册结果就收�
 
 ```
 
+#### 各大推送平台服务端简单demo
+https://github.com/lingduzuobiao123/PushSenderSample 
+
 ********************************************************************************************************
 #### v1.2.1
 
@@ -105,8 +109,6 @@ PushReceiveService 自己实现的推送接收Service 推送注册结果就收�
 #### v1.0.0
 
 1. 集成各大厂家推送
-
-ush_config.gradle 配置各大推送平台key
 
 混淆注意事项：
 

@@ -704,9 +704,9 @@ public class PushRegisterSet {
                 com.meizu.cloud.pushsdk.PushManager.clearNotification(context, notifyId);
                 break;
             case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                JPushInterface.clearNotificationById(context, notifyId);
                 break;
             default:
-                MiPushClient.clearNotification(context, notifyId);
                 break;
         }
     }
@@ -735,9 +735,9 @@ public class PushRegisterSet {
                 com.meizu.cloud.pushsdk.PushManager.clearNotification(context);
                 break;
             case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                JPushInterface.clearAllNotifications(context);
                 break;
             default:
-                MiPushClient.clearNotification(context);
                 break;
         }
     }
