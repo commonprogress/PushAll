@@ -211,26 +211,39 @@
               参考示例代码中的类：com.huawei.hmsagent.HuaweiPushReceiver${PACKAGE_NAME} 要替换上您应用的包名
               com.jsy.secret   ${applicationId}
               -->
-        <receiver
+        <!--<receiver
             android:name="com.dongxl.pushdeme.huawei.HuaweiPushReceiver"
             android:permission="${applicationId}.permission.PROCESS_PUSH_MSG">
             <intent-filter>
-                <!-- 必须,用于接收token -->
+                &lt;!&ndash; 必须,用于接收token &ndash;&gt;
                 <action android:name="com.huawei.android.push.intent.REGISTRATION" />
-                <!-- 必须, 用于接收透传消息 -->
+                &lt;!&ndash; 必须, 用于接收透传消息 &ndash;&gt;
                 <action android:name="com.huawei.android.push.intent.RECEIVE" />
-                <!-- 必须, 用于接收通知栏消息点击事件 此事件不需要开发者处理，只需注册就可以-->
+                &lt;!&ndash; 必须, 用于接收通知栏消息点击事件 此事件不需要开发者处理，只需注册就可以&ndash;&gt;
                 <action android:name="com.huawei.intent.action.PUSH_DELAY_NOTIFY" />
             </intent-filter>
 
-            <!--用于点击通知栏或通知栏上按钮后触发onEvent回调  这个通知会在后续版本中逐渐废弃，请开发者谨慎使用-->
+            &lt;!&ndash;用于点击通知栏或通知栏上按钮后触发onEvent回调  这个通知会在后续版本中逐渐废弃，请开发者谨慎使用&ndash;&gt;
             <intent-filter>
-                <!-- 用于点击通知栏或通知栏上的按钮后触发onEvent回调 -->
+                &lt;!&ndash; 用于点击通知栏或通知栏上的按钮后触发onEvent回调 &ndash;&gt;
                 <action android:name="com.huawei.android.push.intent.CLICK" />
-                <!-- 查看push通道是否连接, 不查看则不需要 -->
+                &lt;!&ndash; 查看push通道是否连接, 不查看则不需要 &ndash;&gt;
                 <action android:name="com.huawei.intent.action.PUSH_STATE" />
             </intent-filter>
-        </receiver>
+
+        </receiver>-->
+
+        <service
+            android:name="com.dongxl.pushdeme.huawei.HuaweiPushService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="${applicationId}.permission.PROCESS_PUSH_MSG"
+            android:process=":HmsMessageService">
+            <intent-filter>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <!--华为push end-->
 
         <!--oppo push start-->

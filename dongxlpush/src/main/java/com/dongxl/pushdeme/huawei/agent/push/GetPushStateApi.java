@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.huawei.hms.api.HuaweiApiClient;
-import com.huawei.hms.support.api.push.HuaweiPush;
+//import com.huawei.hms.support.api.push.HuaweiPush;
 import com.dongxl.pushdeme.huawei.HMSAgent;
 import com.dongxl.pushdeme.huawei.agent.common.*;
 import com.dongxl.pushdeme.huawei.agent.push.handler.GetPushStateHandler;
@@ -35,8 +35,8 @@ public class GetPushStateApi extends BaseApiAgent {
                     HMSAgentLog.e("client not connted");
                     onGetPushStateResult(rst);
                 } else {
-                    HuaweiPush.HuaweiPushApi.getPushState(client);
-                    onGetPushStateResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS);
+//                    HuaweiPush.HuaweiPushApi.getPushState(client);
+//                    onGetPushStateResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS);
                 }
             }
         });

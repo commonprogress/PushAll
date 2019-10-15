@@ -6,6 +6,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.dongxl.pushdeme.huawei.HMSAgent;
+import com.dongxl.pushdeme.huawei.HuaweiPushRegister;
 import com.dongxl.pushdeme.huawei.agent.common.HMSAgentLog;
 import com.dongxl.pushdeme.huawei.agent.common.HMSSharedUtils;
 import com.dongxl.pushdeme.huawei.agent.common.handler.ConnectHandler;
@@ -15,6 +16,7 @@ import com.dongxl.pushdeme.utils.LogUtils;
 import com.dongxl.pushdeme.utils.PhoneUtils;
 import com.dongxl.pushdeme.utils.RomUtil;
 import com.dongxl.pushdeme.vivo.VivoPushOperation;
+import com.huawei.hms.aaid.HmsInstanceId;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.vivo.push.IPushActionListener;
 import com.vivo.push.PushClient;
@@ -163,33 +165,34 @@ public class PushRegisterSet {
      * @param application
      */
     private static void huaweiRegisterInit(Application application) {
-        HMSAgentLog.setHMSAgentLogCallback(new HMSAgentLog.IHMSAgentLogCallback() {
-            @Override
-            public void logD(String tag, String log) {
-                LogUtils.d(TAG, log);
-            }
-
-            @Override
-            public void logV(String tag, String log) {
-                LogUtils.v(TAG, log);
-            }
-
-            @Override
-            public void logI(String tag, String log) {
-                LogUtils.i(TAG, log);
-            }
-
-            @Override
-            public void logW(String tag, String log) {
-                LogUtils.e(TAG, log);
-            }
-
-            @Override
-            public void logE(String tag, String log) {
-                LogUtils.e(TAG, log);
-            }
-        });
-        HMSAgent.init(application);
+//        HMSAgentLog.setHMSAgentLogCallback(new HMSAgentLog.IHMSAgentLogCallback() {
+//            @Override
+//            public void logD(String tag, String log) {
+//                LogUtils.d(TAG, log);
+//            }
+//
+//            @Override
+//            public void logV(String tag, String log) {
+//                LogUtils.v(TAG, log);
+//            }
+//
+//            @Override
+//            public void logI(String tag, String log) {
+//                LogUtils.i(TAG, log);
+//            }
+//
+//            @Override
+//            public void logW(String tag, String log) {
+//                LogUtils.e(TAG, log);
+//            }
+//
+//            @Override
+//            public void logE(String tag, String log) {
+//                LogUtils.e(TAG, log);
+//            }
+//        });
+//        HMSAgent.init(application);
+        HmsInstanceId inst = HmsInstanceId.getInstance(application);
     }
 
     /**
@@ -200,25 +203,27 @@ public class PushRegisterSet {
      */
     private static void huaweiRegisterConnect(final Activity activity) {
         final Context context = activity.getApplicationContext();
-        HMSAgent.connect(activity, new ConnectHandler() {
-            @Override
-            public void onConnect(int rst) {
-                LogUtils.i(TAG, "HMS connect end:" + rst);
-                getHuaweiPushToken();
-            }
-        });
+//        HMSAgent.connect(activity, new ConnectHandler() {
+//            @Override
+//            public void onConnect(int rst) {
+//                LogUtils.i(TAG, "HMS connect end:" + rst);
+//                getHuaweiPushToken();
+//            }
+//        });
+        getHuaweiPushToken(context);
     }
 
     /**
      * 获取华为的push token
      */
-    private static void getHuaweiPushToken() {
-        HMSAgent.Push.getToken(new GetTokenHandler() {
-            @Override
-            public void onResult(int rst) {
-                LogUtils.i(TAG, "get token: end" + rst);
-            }
-        });
+    private static void getHuaweiPushToken(final Context context) {
+//        HMSAgent.Push.getToken(new GetTokenHandler() {
+//            @Override
+//            public void onResult(int rst) {
+//                LogUtils.i(TAG, "get token: end" + rst);
+//            }
+//        });
+        HuaweiPushRegister.getHuaweiPushToken(context);
     }
 
     /**
@@ -470,18 +475,8 @@ public class PushRegisterSet {
                 isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_HUAWEI:
-                // 以前支持现在已经作废
-//            HMSAgent.Push.setTopic(getTopicMap(topic, topics), new SetTopicHandler() {
-//                @Override
-//                public void onResult(int rst) {
-//                    LogUtils.i(TAG, "setTopic: end" + rst);
-//                    PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_TOPIC);
-//                    pushData.setTopic(topic);
-//                    pushData.setResultCode(rst);
-//                    ServiceManager.sendPushDataToService(context, pushData, PushConstants.PushPlatform.PLATFORM_HUAWEI);
-//                }
-//            });
-                isSupport = false;
+                HuaweiPushRegister.subscribe(context, topic);
+                isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
                 initOppoPushCallback(context);
@@ -565,18 +560,8 @@ public class PushRegisterSet {
                 isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_HUAWEI:
-                // 以前支持现在已经作废
-//            HMSAgent.Push.deleteTopic(getTopicKeys(topic, topics), new DeleteTopicHandler() {
-//                @Override
-//                public void onResult(int rst) {
-//                    LogUtils.i(TAG, "deleteToken: end" + rst);
-//                    PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_UNTOPIC);
-//                    pushData.setTopic(topic);
-//                    pushData.setResultCode(rst);
-//                    ServiceManager.sendPushDataToService(context, pushData, PushConstants.PushPlatform.PLATFORM_HUAWEI);
-//                }
-//            });
-                isSupport = false;
+                HuaweiPushRegister.unsubscribe(context, topic);
+                isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
                 initOppoPushCallback(context);

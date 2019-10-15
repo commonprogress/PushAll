@@ -5,7 +5,7 @@ ext {
     jpush_appkey = "46b514bd1b982739ec4d2f6f"
     jpush_channel = "default_developer"
 
-    huaweipush_appid = "101001991"
+    huaweipush_appid = "101075517"
 
     vivopush_appkey = "6ab44aea-3c2a-4dd9-94c7-e0e5d0cb4d26"
     vivopush_appid = "14449"

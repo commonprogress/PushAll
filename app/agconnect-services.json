@@ -1,0 +1,11 @@
+{
+	"client":{
+		"cp_id":"890086000300073955",
+		"product_id":"9105385871708149936",
+		"client_id":"208473371074102336",
+		"client_secret":"F9E7DBC13688E4EC0C6F3122C441E4752C74B68FA27846733451546E8D5C3F44",
+		"app_id":"101075517",
+		"package_name":"com.jsy.secret"
+	},
+	"configuration_version":"1.0"
+}

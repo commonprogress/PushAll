@@ -11,7 +11,7 @@ import com.huawei.hms.activity.BridgeActivity;
 import com.huawei.hms.api.ConnectionResult;
 import com.huawei.hms.api.HuaweiApiAvailability;
 import com.huawei.hms.api.HuaweiApiClient;
-import com.huawei.hms.support.api.push.HuaweiPush;
+//import com.huawei.hms.support.api.push.HuaweiPush;
 import com.dongxl.pushdeme.huawei.HMSAgent;
 
 import java.util.ArrayList;
@@ -298,7 +298,7 @@ public final class ApiClientMgr implements HuaweiApiClient.ConnectionCallbacks, 
 //                    .addApi(HuaweiPay.PAY_API)
 //                    .addApi(HuaweiSns.API)
 //                    .addApi(HuaweiId.SIGN_IN_API, signInOptions)
-                    .addApi(HuaweiPush.PUSH_API)
+//                    .addApi(HuaweiPush.PUSH_API)
 //                    .addApi(HuaweiOpendevice.OPEN_DEVICE_API)
                     .addConnectionCallbacks(INST)
                     .addOnConnectionFailedListener(INST)

@@ -7,8 +7,8 @@ import com.huawei.hms.api.HuaweiApiClient;
 import com.huawei.hms.support.api.client.PendingResult;
 import com.huawei.hms.support.api.client.ResultCallback;
 import com.huawei.hms.support.api.client.Status;
-import com.huawei.hms.support.api.push.HandleTagsResult;
-import com.huawei.hms.support.api.push.HuaweiPush;
+//import com.huawei.hms.support.api.push.HandleTagsResult;
+//import com.huawei.hms.support.api.push.HuaweiPush;
 import com.huawei.hms.support.api.push.PushException;
 import com.dongxl.pushdeme.huawei.HMSAgent;
 import com.dongxl.pushdeme.huawei.agent.common.*;
@@ -45,36 +45,36 @@ public class SetTopicApi extends BaseApiAgent {
                 HMSAgentLog.e("client not connted");
                 setTopicResult(rst);
             } else {
-                try {
-                    PendingResult<HandleTagsResult> tagResult = HuaweiPush.HuaweiPushApi.setTags(client, topics);
-                    tagResult.setResultCallback(new ResultCallback<HandleTagsResult>() {
-                        @Override
-                        public void onResult(HandleTagsResult result) {
-                            if (result == null) {
-                                HMSAgentLog.e("result is null");
-                                setTopicResult(HMSAgent.AgentResultCode.RESULT_IS_NULL);
-                                return;
-                            }
-
-                            Status status = result.getStatus();
-                            if (status == null) {
-                                HMSAgentLog.e("status is null");
-                                setTopicResult(HMSAgent.AgentResultCode.STATUS_IS_NULL);
-                                return;
-                            }
-                            HMSAgentLog.d("status=" + status);
-                            if (status == Status.SUCCESS) {
-                                setTopicResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS);
-                            } else {
-                                setTopicResult(status.getStatusCode());
-                            }
-                        }
-                    });
-                    setTopicResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS);
-                } catch (PushException e) {
-                    HMSAgentLog.e("setTopic 失败:" + e.getMessage());
-                    setTopicResult(HMSAgent.AgentResultCode.CALL_EXCEPTION);
-                }
+//                try {
+//                    PendingResult<HandleTagsResult> tagResult = HuaweiPush.HuaweiPushApi.setTags(client, topics);
+//                    tagResult.setResultCallback(new ResultCallback<HandleTagsResult>() {
+//                        @Override
+//                        public void onResult(HandleTagsResult result) {
+//                            if (result == null) {
+//                                HMSAgentLog.e("result is null");
+//                                setTopicResult(HMSAgent.AgentResultCode.RESULT_IS_NULL);
+//                                return;
+//                            }
+//
+//                            Status status = result.getStatus();
+//                            if (status == null) {
+//                                HMSAgentLog.e("status is null");
+//                                setTopicResult(HMSAgent.AgentResultCode.STATUS_IS_NULL);
+//                                return;
+//                            }
+//                            HMSAgentLog.d("status=" + status);
+//                            if (status == Status.SUCCESS) {
+//                                setTopicResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS);
+//                            } else {
+//                                setTopicResult(status.getStatusCode());
+//                            }
+//                        }
+//                    });
+//                    setTopicResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS);
+//                } catch (PushException e) {
+//                    HMSAgentLog.e("setTopic 失败:" + e.getMessage());
+//                    setTopicResult(HMSAgent.AgentResultCode.CALL_EXCEPTION);
+//                }
             }
 
 

@@ -44,27 +44,27 @@ import java.io.UnsupportedEncodingException;
  * click to open the Notification bar message, and click the button on the notification bar.
  * The business decides whether to call the function.
  */
-public class HuaweiPushReceiver extends PushReceiver {
+/*public class HuaweiPushReceiver extends PushReceiver {
 
     public static final String TAG = HuaweiPushReceiver.class.getSimpleName();
 
-    /**
+    *//**
      * 发送消息到接收服务
      *
      * @param context
      * @param pushData
-     */
+     *//*
     private void sendPushDataToService(final Context context, final PushDataBean pushData) {
         ServiceManager.sendPushDataToService(context, pushData, PushConstants.PushPlatform.PLATFORM_HUAWEI);
     }
 
-    /**
+    *//**
      * 获取token 的监听
      *
      * @param context
      * @param token
      * @param extras
-     */
+     *//*
     @Override
     public void onToken(Context context, String token, Bundle extras) {
         //开发者自行实现Token保存逻辑
@@ -78,14 +78,14 @@ public class HuaweiPushReceiver extends PushReceiver {
         LogUtils.i(TAG, "华为onToken is called. 111: log==" + reason + "==extras==" + extras.toString());
     }
 
-    /**
+    *//**
      * 开发者自行实现透传消息处理
      *
      * @param context
      * @param msg
      * @param bundle
      * @return
-     */
+     *//*
     @Override
     public boolean onPushMsg(Context context, byte[] msg, Bundle bundle) {
         String token = null == bundle ? "" : bundle.getString(BOUND_KEY.deviceTokenKey);
@@ -109,7 +109,7 @@ public class HuaweiPushReceiver extends PushReceiver {
         return false;
     }
 
-    /**
+    *//**
      * 可选，后续版本逐渐废弃，请开发者谨慎使用：
      * Event.NOTIFICATION_OPENED 通知栏点击事件
      * Event.NOTIFICATION_CLICK_BTN 通知栏按钮点击事件
@@ -117,7 +117,7 @@ public class HuaweiPushReceiver extends PushReceiver {
      * @param context
      * @param event
      * @param extras
-     */
+     *//*
     @Override
     public void onEvent(Context context, Event event, Bundle extras) {
         int notifyId = 0;
@@ -151,4 +151,4 @@ public class HuaweiPushReceiver extends PushReceiver {
         LogUtils.i(TAG, "华为onPushState is called. 111:==reason=" + reason);
     }
 
-}
+}*/

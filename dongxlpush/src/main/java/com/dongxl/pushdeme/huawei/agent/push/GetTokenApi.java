@@ -8,9 +8,9 @@ import com.huawei.hms.support.api.client.PendingResult;
 import com.huawei.hms.support.api.client.ResultCallback;
 import com.huawei.hms.support.api.client.Status;
 import com.huawei.hms.support.api.entity.core.CommonCode;
-import com.huawei.hms.support.api.entity.push.TokenResp;
-import com.huawei.hms.support.api.push.HuaweiPush;
-import com.huawei.hms.support.api.push.TokenResult;
+//import com.huawei.hms.support.api.entity.push.TokenResp;
+//import com.huawei.hms.support.api.push.HuaweiPush;
+//import com.huawei.hms.support.api.push.TokenResult;
 import com.dongxl.pushdeme.huawei.HMSAgent;
 import com.dongxl.pushdeme.huawei.agent.common.*;
 import com.dongxl.pushdeme.huawei.agent.push.handler.GetTokenHandler;
@@ -43,40 +43,40 @@ public class GetTokenApi extends BaseApiAgent {
      */
     @Override
     public void onConnect(int rst, HuaweiApiClient client) {
-        if (client == null || !ApiClientMgr.INST.isConnect(client)) {
-            HMSAgentLog.e("client not connted");
-            onPushTokenResult(rst, null);
-            return;
-        }
-        PendingResult<TokenResult> tokenResult = HuaweiPush.HuaweiPushApi.getToken(client);
-        tokenResult.setResultCallback(new ResultCallback<TokenResult>() {
-            @Override
-            public void onResult(TokenResult result) {
-                if (result == null) {
-                    HMSAgentLog.e("result is null");
-                    onPushTokenResult(HMSAgent.AgentResultCode.RESULT_IS_NULL, null);
-                    return;
-                }
-
-                Status status = result.getStatus();
-                if (status == null) {
-                    HMSAgentLog.e("status is null");
-                    onPushTokenResult(HMSAgent.AgentResultCode.STATUS_IS_NULL, null);
-                    return;
-                }
-
-                int rstCode = status.getStatusCode();
-                HMSAgentLog.d("status=" + status);
-                // 需要重试的错误码，并且可以重试
-                if ((rstCode == CommonCode.ErrorCode.SESSION_INVALID
-                    || rstCode == CommonCode.ErrorCode.CLIENT_API_INVALID) && retryTimes > 0) {
-                    retryTimes--;
-                    connect();
-                } else {
-                    onPushTokenResult(rstCode, result.getTokenRes());
-                }
-            }
-        });
+//        if (client == null || !ApiClientMgr.INST.isConnect(client)) {
+//            HMSAgentLog.e("client not connted");
+//            onPushTokenResult(rst, null);
+//            return;
+//        }
+//        PendingResult<TokenResult> tokenResult = HuaweiPush.HuaweiPushApi.getToken(client);
+//        tokenResult.setResultCallback(new ResultCallback<TokenResult>() {
+//            @Override
+//            public void onResult(TokenResult result) {
+//                if (result == null) {
+//                    HMSAgentLog.e("result is null");
+//                    onPushTokenResult(HMSAgent.AgentResultCode.RESULT_IS_NULL, null);
+//                    return;
+//                }
+//
+//                Status status = result.getStatus();
+//                if (status == null) {
+//                    HMSAgentLog.e("status is null");
+//                    onPushTokenResult(HMSAgent.AgentResultCode.STATUS_IS_NULL, null);
+//                    return;
+//                }
+//
+//                int rstCode = status.getStatusCode();
+//                HMSAgentLog.d("status=" + status);
+//                // 需要重试的错误码，并且可以重试
+//                if ((rstCode == CommonCode.ErrorCode.SESSION_INVALID
+//                    || rstCode == CommonCode.ErrorCode.CLIENT_API_INVALID) && retryTimes > 0) {
+//                    retryTimes--;
+//                    connect();
+//                } else {
+//                    onPushTokenResult(rstCode, result.getTokenRes());
+//                }
+//            }
+//        });
     }
 
     /**
@@ -86,14 +86,14 @@ public class GetTokenApi extends BaseApiAgent {
      * @param rstCode 结果码
      * @param resp    调用获取pushtoken接口的结果
      */
-    void onPushTokenResult(int rstCode, TokenResp resp) {
-        HMSAgentLog.i("getToken:callback=" + StrUtils.objDesc(handler) + " retCode=" + rstCode + " resp=" + resp);
-        if (handler != null) {
-            new Handler(Looper.getMainLooper()).post(new CallbackCodeRunnable(handler, rstCode));
-            handler = null;
-        }
-        retryTimes = MAX_RETRY_TIMES;
-    }
+//    void onPushTokenResult(int rstCode, TokenResp resp) {
+//        HMSAgentLog.i("getToken:callback=" + StrUtils.objDesc(handler) + " retCode=" + rstCode + " resp=" + resp);
+//        if (handler != null) {
+//            new Handler(Looper.getMainLooper()).post(new CallbackCodeRunnable(handler, rstCode));
+//            handler = null;
+//        }
+//        retryTimes = MAX_RETRY_TIMES;
+//    }
 
     /**
      * 获取pushtoken接口

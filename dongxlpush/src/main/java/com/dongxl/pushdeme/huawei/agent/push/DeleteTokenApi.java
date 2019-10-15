@@ -5,7 +5,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.huawei.hms.api.HuaweiApiClient;
-import com.huawei.hms.support.api.push.HuaweiPush;
+//import com.huawei.hms.support.api.push.HuaweiPush;
 import com.dongxl.pushdeme.huawei.HMSAgent;
 import com.dongxl.pushdeme.huawei.agent.common.*;
 import com.dongxl.pushdeme.huawei.agent.push.handler.DeleteTokenHandler;
@@ -43,13 +43,13 @@ public class DeleteTokenApi extends BaseApiAgent {
                         HMSAgentLog.e("client not connted");
                         onDeleteTokenResult(rst);
                     } else {
-                        try {
-                            HuaweiPush.HuaweiPushApi.deleteToken(client, token);
-                            onDeleteTokenResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS);
-                        } catch (Exception e) {
-                            HMSAgentLog.e("删除TOKEN失败:" + e.getMessage());
-                            onDeleteTokenResult(HMSAgent.AgentResultCode.CALL_EXCEPTION);
-                        }
+//                        try {
+//                            HuaweiPush.HuaweiPushApi.deleteToken(client, token);
+//                            onDeleteTokenResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS);
+//                        } catch (Exception e) {
+//                            HMSAgentLog.e("删除TOKEN失败:" + e.getMessage());
+//                            onDeleteTokenResult(HMSAgent.AgentResultCode.CALL_EXCEPTION);
+//                        }
                     }
                 } else {
                     HMSAgentLog.e("删除TOKEN失败: 要删除的token为空");

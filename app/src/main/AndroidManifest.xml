@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dongxl.push">
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <application
         android:name=".DongApplication"
         android:allowBackup="true"
@@ -17,6 +18,15 @@
             android:name=".service.PushReceiveService"
             android:enabled="true"
             android:exported="true"></service>
+
+        <service android:name=".service.MyJobIntentService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name=".service.MyJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

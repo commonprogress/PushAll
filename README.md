@@ -9,6 +9,20 @@
 ### Gradle
 
 ```
+    apply from: "push_config.gradle"
+    
+    buildscript {
+    
+        repositories {
+            ...
+            maven {url 'http://developer.huawei.com/repo/'}
+        }
+        dependencies {
+            ...
+            classpath 'com.huawei.agconnect:agcp:1.0.0.300'
+        }
+    }
+    
  	allprojects {
 		repositories {
 			...
@@ -72,7 +86,7 @@ PushReceiveService 自己实现的推送接收Service 推送注册结果就收�
             jpush_channel = "default_developer" //极光渠道 默认default_developer
         
         //华为
-            huaweipush_appid = "101001991"
+            huaweipush_appid = "101075517"
         
         //vivo
             vivopush_appkey = "6ab44aea-3c2a-4dd9-94c7-e0e5d0cb4d26"
@@ -98,6 +112,12 @@ PushReceiveService 自己实现的推送接收Service 推送注册结果就收�
 https://github.com/lingduzuobiao123/PushSenderSample 
 
 ********************************************************************************************************
+#### v1.3.0
+
+1. 华为推送服务3.0
+   https://developer.huawei.com/consumer/cn/service/hms/catalog/huaweipush_v3.html?page=hmssdk_huaweipush_devprepare_v3
+   1,在华为开发平台生成的agconnect-services.json文件拷贝到应用级根目录下。
+
 #### v1.2.1
 
 1. 此项目引用Gradle的配置

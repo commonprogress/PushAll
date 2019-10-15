@@ -1,5 +1,10 @@
 package com.dongxl.push;
 
+import android.app.ActivityManager;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.dongxl.push.service.MyJobService;
 import com.dongxl.push.uitls.UWhiteListSetting;
 import com.dongxl.push.uitls.ZiqiManager;
 import com.dongxl.pushdeme.PushRegisterSet;
@@ -33,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         checkRequestPermissions();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            //限制应用时，确保 ActivityManager.isBackgroundRestricted()返回 true。
+//             ActivityManager.isBackgroundRestricted();
+        }
     }
 
     /**
@@ -69,5 +79,12 @@ public class MainActivity extends AppCompatActivity {
             }
             finish();
         }
+    }
+    private int mJobId = 0;
+    private void sss(){
+        JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        ComponentName componentName = new ComponentName(MainActivity.this, MyJobService.class);
+        JobInfo.Builder builder = new JobInfo.Builder(++mJobId, componentName);
+
     }
 }

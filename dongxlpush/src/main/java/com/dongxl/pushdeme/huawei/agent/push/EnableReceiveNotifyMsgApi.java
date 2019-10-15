@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.huawei.hms.api.HuaweiApiClient;
-import com.huawei.hms.support.api.push.HuaweiPush;
+//import com.huawei.hms.support.api.push.HuaweiPush;
 import com.dongxl.pushdeme.huawei.HMSAgent;
 import com.dongxl.pushdeme.huawei.agent.common.*;
 import com.dongxl.pushdeme.huawei.agent.push.handler.EnableReceiveNotifyMsgHandler;
@@ -41,8 +41,8 @@ public class EnableReceiveNotifyMsgApi extends BaseApiAgent {
                     onEnableReceiveNotifyMsgResult(rst);
                 } else {
                     // 开启/关闭自呈现消息
-                    HuaweiPush.HuaweiPushApi.enableReceiveNotifyMsg(client, enable);
-                    onEnableReceiveNotifyMsgResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS);
+//                    HuaweiPush.HuaweiPushApi.enableReceiveNotifyMsg(client, enable);
+//                    onEnableReceiveNotifyMsgResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS);
                 }
             }
         });

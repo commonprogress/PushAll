@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.huawei.agconnect'
 
 android {
     compileSdkVersion 28
@@ -26,6 +27,8 @@ android {
         buildConfigField 'String', 'XIAOMIPUSH_APPID', "\"${xiaomipush_appid}\""
         buildConfigField 'String', 'XIAOMIPUSH_APPKEY', "\"${xiaomipush_appkey}\""
 
+        buildConfigField "String", "HUAWEIPUSH_APPID", "\"${huaweipush_appid}\""
+
         buildConfigField "String", "OPPOPUSH_APPID", "\"${oppopush_appid}\""
         buildConfigField "String", "OPPOPUSH_APPKEY", "\"${oppopush_appkey}\""
         buildConfigField "String", "OPPOPUSH_APPSECRET", "\"${oppopush_appsecret}\""
@@ -34,7 +37,8 @@ android {
         buildConfigField "String", "MEIZUPUSH_APPID", "\"${meizupush_appid}\""
 
         /*华为推送 如果您的应用不需要设置只支持某些特定语言，则请忽略此步骤。如果您的应用需要设置只支持某些特定语言，请最少要支持en（英文） 和 zh-rCN（简体中文）两种语言*/
-//        resConfigs "en", "zh-rCN"
+        /*打开应用级根目录的build.gradle文件*/
+//        resConfigs "en", "en-rUS", "zh-rCN", "zh-rTW"
 
         ndk {
             //选择要添加的对应 cpu 类型的 .so 库。
@@ -63,7 +67,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     /*华为推送引用*/
-    implementation 'com.huawei.android.hms:push:2.6.3.301'
+//    implementation 'com.huawei.android.hms:push:2.6.3.301'
+    implementation 'com.huawei.hms:push:3.0.0.302'
+    implementation 'com.huawei.hms:opendevice:3.0.0.302'
     /*魅族*/
     implementation 'com.meizu.flyme.internet:push-internal:3.8.3'
 /*极光*/

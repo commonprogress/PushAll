@@ -7,8 +7,8 @@ import com.huawei.hms.api.HuaweiApiClient;
 import com.huawei.hms.support.api.client.PendingResult;
 import com.huawei.hms.support.api.client.ResultCallback;
 import com.huawei.hms.support.api.client.Status;
-import com.huawei.hms.support.api.push.GetTagResult;
-import com.huawei.hms.support.api.push.HuaweiPush;
+//import com.huawei.hms.support.api.push.GetTagResult;
+//import com.huawei.hms.support.api.push.HuaweiPush;
 import com.huawei.hms.support.api.push.PushException;
 import com.dongxl.pushdeme.huawei.HMSAgent;
 import com.dongxl.pushdeme.huawei.agent.common.*;
@@ -39,36 +39,36 @@ public class GetTopicApi extends BaseApiAgent {
             HMSAgentLog.e("client not connted");
             getTopicResult(rst, null);
         } else {
-            try {
-                PendingResult<GetTagResult> getTagResult = HuaweiPush.HuaweiPushApi.getTags(client);
-                getTagResult.setResultCallback(new ResultCallback<GetTagResult>() {
-                    @Override
-                    public void onResult(GetTagResult result) {
-                        if (result == null) {
-                            HMSAgentLog.e("result is null");
-                            getTopicResult(HMSAgent.AgentResultCode.RESULT_IS_NULL, null);
-                            return;
-                        }
-
-                        Status status = result.getStatus();
-                        if (status == null) {
-                            HMSAgentLog.e("status is null");
-                            getTopicResult(HMSAgent.AgentResultCode.STATUS_IS_NULL, null);
-                            return;
-                        }
-                        HMSAgentLog.d("status=" + status);
-                        if (status == Status.SUCCESS) {
-                            getTopicResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS, result.getTags());
-                        } else {
-                            getTopicResult(status.getStatusCode(), null);
-                        }
-                    }
-                });
-                getTopicResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS, null);
-            } catch (PushException e) {
-                HMSAgentLog.e("getTopic 失败:" + e.getMessage());
-                getTopicResult(HMSAgent.AgentResultCode.CALL_EXCEPTION, null);
-            }
+//            try {
+//                PendingResult<GetTagResult> getTagResult = HuaweiPush.HuaweiPushApi.getTags(client);
+//                getTagResult.setResultCallback(new ResultCallback<GetTagResult>() {
+//                    @Override
+//                    public void onResult(GetTagResult result) {
+//                        if (result == null) {
+//                            HMSAgentLog.e("result is null");
+//                            getTopicResult(HMSAgent.AgentResultCode.RESULT_IS_NULL, null);
+//                            return;
+//                        }
+//
+//                        Status status = result.getStatus();
+//                        if (status == null) {
+//                            HMSAgentLog.e("status is null");
+//                            getTopicResult(HMSAgent.AgentResultCode.STATUS_IS_NULL, null);
+//                            return;
+//                        }
+//                        HMSAgentLog.d("status=" + status);
+//                        if (status == Status.SUCCESS) {
+//                            getTopicResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS, result.getTags());
+//                        } else {
+//                            getTopicResult(status.getStatusCode(), null);
+//                        }
+//                    }
+//                });
+//                getTopicResult(HMSAgent.AgentResultCode.HMSAGENT_SUCCESS, null);
+//            } catch (PushException e) {
+//                HMSAgentLog.e("getTopic 失败:" + e.getMessage());
+//                getTopicResult(HMSAgent.AgentResultCode.CALL_EXCEPTION, null);
+//            }
         }
     }
 
