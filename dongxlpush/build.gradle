@@ -67,7 +67,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     /*华为推送引用*/
-//    implementation 'com.huawei.android.hms:push:2.6.3.301'
     implementation 'com.huawei.hms:push:3.0.0.302'
     implementation 'com.huawei.hms:opendevice:3.0.0.302'
     /*魅族*/

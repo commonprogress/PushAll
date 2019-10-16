@@ -23,7 +23,6 @@ import com.dongxl.pushdeme.PushConstants;
 import com.dongxl.pushdeme.ServiceManager;
 import com.dongxl.pushdeme.bean.MessageDataBean;
 import com.dongxl.pushdeme.bean.PushDataBean;
-import com.dongxl.pushdeme.huawei.agent.common.HMSSharedUtils;
 import com.dongxl.pushdeme.utils.LogUtils;
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;

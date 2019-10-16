@@ -23,7 +23,6 @@ import android.text.TextUtils;
 import com.dongxl.pushdeme.PushConstants;
 import com.dongxl.pushdeme.ServiceManager;
 import com.dongxl.pushdeme.bean.PushDataBean;
-import com.dongxl.pushdeme.huawei.agent.common.HMSSharedUtils;
 import com.dongxl.pushdeme.utils.LogUtils;
 import com.huawei.hmf.tasks.OnCompleteListener;
 import com.huawei.hmf.tasks.OnFailureListener;

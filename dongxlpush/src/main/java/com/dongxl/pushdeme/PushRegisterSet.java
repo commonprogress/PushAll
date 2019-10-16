@@ -5,12 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.dongxl.pushdeme.huawei.HMSAgent;
 import com.dongxl.pushdeme.huawei.HuaweiPushRegister;
-import com.dongxl.pushdeme.huawei.agent.common.HMSAgentLog;
-import com.dongxl.pushdeme.huawei.agent.common.HMSSharedUtils;
-import com.dongxl.pushdeme.huawei.agent.common.handler.ConnectHandler;
-import com.dongxl.pushdeme.huawei.agent.push.handler.GetTokenHandler;
+import com.dongxl.pushdeme.huawei.HMSSharedUtils;
 import com.dongxl.pushdeme.oppo.OppoPushCallback;
 import com.dongxl.pushdeme.utils.LogUtils;
 import com.dongxl.pushdeme.utils.PhoneUtils;

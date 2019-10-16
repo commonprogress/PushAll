@@ -1,4 +1,4 @@
-package com.dongxl.pushdeme.huawei.agent.common;
+package com.dongxl.pushdeme.huawei;
 
 import android.content.Context;
 import android.content.SharedPreferences;
