@@ -1,9 +1,8 @@
 package com.dongxl.push;
 
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.dongxl.pushdeme.PushRegisterSet;
 

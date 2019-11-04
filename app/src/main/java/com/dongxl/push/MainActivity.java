@@ -1,20 +1,18 @@
 package com.dongxl.push;
 
-import android.app.ActivityManager;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.dongxl.push.service.MyJobService;
 import com.dongxl.push.uitls.UWhiteListSetting;
-import com.dongxl.push.uitls.ZiqiManager;
 import com.dongxl.pushdeme.PushRegisterSet;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("PermissionActivity", "Permissions granted:");
 //                PushRegisterSet.registerInitPush(MainActivity.this);
             }
-            finish();
+//            finish();
         }
     }
     private int mJobId = 0;
