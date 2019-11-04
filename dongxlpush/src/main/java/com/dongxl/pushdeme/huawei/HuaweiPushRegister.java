@@ -258,6 +258,15 @@ public class HuaweiPushRegister {
         }
     }
 
+    /**
+     * 检查推送是否打开
+     * @param context
+     * @return
+     */
+    public static boolean checkTurnOnOrOffHuaweiPush(final Context context){
+        return true;
+    }
+
     public static final class HuaweiResultCode {
         /**
          * huawei 成功 | success

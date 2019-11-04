@@ -125,6 +125,52 @@ public class VivoPushOperation {
         });
     }
 
+    /**
+     * 打开推送设置
+     *
+     * @param context
+     */
+    public void turnOnPush(final Context context) {
+        PushClient.getInstance(context.getApplicationContext()).turnOnPush(new IPushActionListener() {
+
+            @Override
+            public void onStateChanged(int state) {
+                final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_OTHER, state);
+                String reason;
+                if (state == VivoResultCode.VIVO_SUCCESS) {
+                    reason = "Vivo turnOnPush Result SUCCESS msg=" + state;
+                } else {
+                    reason = "Vivo turnOnPush Result Failed code=" + state;
+                }
+                pushData.setReason(reason);
+                sendPushDataToService(context, pushData);
+            }
+        });
+    }
+
+    /**
+     * 关闭推送设置
+     *
+     * @param context
+     */
+    public void turnOffPush(final Context context) {
+        PushClient.getInstance(context.getApplicationContext()).turnOffPush(new IPushActionListener() {
+
+            @Override
+            public void onStateChanged(int state) {
+                final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_OTHER, state);
+                String reason;
+                if (state == VivoResultCode.VIVO_SUCCESS) {
+                    reason = "Vivo turnOffPush Result SUCCESS msg=" + state;
+                } else {
+                    reason = "Vivo turnOffPush Result Failed code=" + state;
+                }
+                pushData.setReason(reason);
+                sendPushDataToService(context, pushData);
+            }
+        });
+    }
+
     public class VivoResultCode {
         public static final int VIVO_SUCCESS = 0;
     }

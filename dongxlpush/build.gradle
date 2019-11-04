@@ -67,11 +67,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     /*华为推送引用*/
-    implementation 'com.huawei.hms:push:3.0.0.302'
-    implementation 'com.huawei.hms:opendevice:3.0.0.302'
+    implementation 'com.huawei.hms:push:3.0.2.300'
+    implementation 'com.huawei.hms:opendevice:3.0.2.300'
     /*魅族*/
     implementation 'com.meizu.flyme.internet:push-internal:3.8.3'
-/*极光*/
-//    implementation 'cn.jiguang.sdk:jpush:3.3.4'  // 此处以JPush 3.3.4 版本为例。
-//    implementation 'cn.jiguang.sdk:jcore:2.1.2'  // 此处以JCore 2.1.2 版本为例。
+    /*极光*/
+//    implementation 'cn.jiguang.sdk:jcore:2.1.6'  // 此处以JCore 2.1.6 版本为例。
+//    implementation 'cn.jiguang.sdk:jpush:3.3.9'  // 此处以JPush 3.3.9 版本为例。
 }

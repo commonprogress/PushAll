@@ -660,6 +660,94 @@ public class PushRegisterSet {
     }
 
     /**
+     * 检查推送是否打开
+     * @param context
+     * @return 默认返回true
+     */
+    public static boolean checkTurnOnOrOffPush(Context context) {
+        if (!PhoneUtils.isChinaCountry(context)) {
+            return false;
+        }
+        boolean isOn = false;
+        switch (getSupportPushPlatform(context)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                isOn = MiPushClient.shouldUseMIUIPush(context);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                isOn = HuaweiPushRegister.checkTurnOnOrOffHuaweiPush(context);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                com.coloros.mcssdk.PushManager.getInstance().getPushStatus();
+                isOn = true;
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                isOn = true;
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                com.meizu.cloud.pushsdk.PushManager.checkPush(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context));
+                isOn = true;
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                isOn = !JPushInterface.isPushStopped(context);;
+                break;
+            default:
+                isOn = false;
+                break;
+        }
+       return isOn;
+    }
+
+    /**
+     * 打开或者关闭推送
+     *
+     * @param context
+     * @param isOn    true 打开
+     */
+    public static void setTurnOnOrOffPush(Context context, boolean isOn) {
+        if (!PhoneUtils.isChinaCountry(context)) {
+            return;
+        }
+        switch (getSupportPushPlatform(context)) {
+            case PushConstants.PushPlatform.PLATFORM_XIAOMI:
+                if(isOn){
+                    MiPushClient.resumePush(context, null);
+                }else{
+                    MiPushClient.pausePush(context, null);
+                }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_HUAWEI:
+                HuaweiPushRegister.turnOnOrOffHuaweiPush(context, isOn);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_OPPO:
+                if(isOn){
+                    com.coloros.mcssdk.PushManager.getInstance().resumePush();
+                }else{
+                    com.coloros.mcssdk.PushManager.getInstance().pausePush();
+                }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_VIVO:
+                if(isOn){
+                    new VivoPushOperation().turnOnPush(context);
+                }else{
+                    new VivoPushOperation().turnOffPush(context);
+                }
+                break;
+            case PushConstants.PushPlatform.PLATFORM_FLYME:
+                com.meizu.cloud.pushsdk.PushManager.switchPush(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), isOn);
+                break;
+            case PushConstants.PushPlatform.PLATFORM_JPSUH:
+                if(isOn){
+                    JPushInterface.resumePush(context);
+                }else{
+                    JPushInterface.stopPush(context);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * 清空推送通知根据id
      *
      * @param context
@@ -731,7 +819,7 @@ public class PushRegisterSet {
      */
     private static String getSupportPushPlatform(Context context) {
         Context mContext = context.getApplicationContext();
-        if (RomUtil.isMiui()) {
+        if (RomUtil.isMiui() && MiPushClient.shouldUseMIUIPush(context)) {
             return PushConstants.PushPlatform.PLATFORM_XIAOMI;
         } else if (RomUtil.isEmui()) {
             return PushConstants.PushPlatform.PLATFORM_HUAWEI;

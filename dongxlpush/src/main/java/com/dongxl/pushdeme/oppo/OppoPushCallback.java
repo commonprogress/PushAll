@@ -222,7 +222,7 @@ public class OppoPushCallback extends PushAdapter {
     }
 
     /**
-     * push 时间
+     * Push状态正常
      * @param code
      * @param status
      */
