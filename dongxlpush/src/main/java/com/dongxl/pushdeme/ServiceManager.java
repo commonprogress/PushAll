@@ -29,8 +29,14 @@ public class ServiceManager {
             intent.putExtra(PushConstants.KEY_PUSH_DATA, pushData);
             ComponentName componentName = new ComponentName(pkgName, BuildConfig.PUSHRECEIVESERVICE);
             intent.setComponent(componentName);
+
+            //方法一
             context.startService(intent);
 //            ContextCompat.startForegroundService(context, intent);
+
+            //方法二
+//            PushMessageService.enqueueWork(context, componentName, intent);
+
             LogUtils.i(TAG, "sendPushDataToService is called. 222 resultType=" + pushData.getResultType() + " ,pkgName=" + pkgName);
         } else {
             LogUtils.e(TAG, "sendPushDataToService is other. 222  null == pushData,pkgName=" + pkgName);

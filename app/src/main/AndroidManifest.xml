@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dongxl.push">
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!--集成JobIntentService 必须步骤一 权限 -->
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <application
         android:name=".DongApplication"
@@ -19,10 +20,12 @@
             android:enabled="true"
             android:exported="true"></service>
 
-        <service android:name=".service.MyJobIntentService"
+        <!--集成JobIntentService 必须步骤二 android.permission.BIND_JOB_SERVICE -->
+        <service android:name=".service.PushReceiveJobService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <service android:name=".service.MyJobService"
             android:enabled="true"
             android:exported="true"

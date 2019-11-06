@@ -70,7 +70,7 @@ dependencies {
     implementation 'com.huawei.hms:push:3.0.2.300'
     implementation 'com.huawei.hms:opendevice:3.0.2.300'
     /*魅族*/
-    implementation 'com.meizu.flyme.internet:push-internal:3.8.3'
+    implementation 'com.meizu.flyme.internet:push-internal:3.8.4'
     /*极光*/
 //    implementation 'cn.jiguang.sdk:jcore:2.1.6'  // 此处以JCore 2.1.6 版本为例。
 //    implementation 'cn.jiguang.sdk:jpush:3.3.9'  // 此处以JPush 3.3.9 版本为例。
