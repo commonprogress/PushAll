@@ -1,10 +1,10 @@
 <component name="libraryTable">
   <library name="Gradle: com.huawei.android.hms:game:2.6.3.301@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/game-2.6.3.301.aar/18c1457102d0260852c48cf92e753fa1/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/game-2.6.3.301.aar/18c1457102d0260852c48cf92e753fa1/jars/classes.jar!/" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/game-2.6.3.301.aar/18c1457102d0260852c48cf92e753fa1/jars/libs/BuoySupport-9.0.0.218.jar!/" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/game-2.6.3.301.aar/18c1457102d0260852c48cf92e753fa1/jars/libs/BuoyCore-9.0.0.218.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/game-2.6.3.301.aar/cb179e20d486b1c9c4ddaa5794cffa9c/jars/libs/BuoySupport-9.0.0.218.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/game-2.6.3.301.aar/cb179e20d486b1c9c4ddaa5794cffa9c/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/game-2.6.3.301.aar/cb179e20d486b1c9c4ddaa5794cffa9c/jars/libs/BuoyCore-9.0.0.218.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/game-2.6.3.301.aar/cb179e20d486b1c9c4ddaa5794cffa9c/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

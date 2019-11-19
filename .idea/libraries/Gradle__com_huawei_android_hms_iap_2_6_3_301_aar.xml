@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.huawei.android.hms:iap:2.6.3.301@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/iap-2.6.3.301.aar/72d2231e4c43eb322968bca22ae79d83/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/iap-2.6.3.301.aar/72d2231e4c43eb322968bca22ae79d83/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/iap-2.6.3.301.aar/74fc75e4b45a0e55f70e680c261beaa3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/iap-2.6.3.301.aar/74fc75e4b45a0e55f70e680c261beaa3/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

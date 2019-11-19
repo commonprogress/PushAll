@@ -10,7 +10,9 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
 
-
+/**
+ * https://www.jianshu.com/p/19b37b28575f
+ */
 public class ZiqiManager {
 
 //    private SettingDialogPermision dialog_per;
