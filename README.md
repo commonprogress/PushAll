@@ -6,7 +6,7 @@
 
 集成方式：
 
-### Gradle
+### Gradle 项目根目录build.gradle
 
 ```
     apply from: "push_config.gradle"
@@ -15,11 +15,11 @@
     
         repositories {
             ...
-            maven {url 'http://developer.huawei.com/repo/'}
+            maven {url 'https://developer.huawei.com/repo/'}
         }
         dependencies {
             ...
-            classpath 'com.huawei.agconnect:agcp:1.0.0.300'
+            classpath 'com.huawei.agconnect:agcp:1.3.1.300'
         }
     }
     
@@ -27,12 +27,12 @@
 		repositories {
 			...
 			maven { url 'https://jitpack.io' }
-			maven { url 'http://developer.huawei.com/repo/' }
+			maven { url 'https://developer.huawei.com/repo/' }
 		}
 	}
 
 ```
-
+### 引用Push aar 
 ```
 	dependencies {
 	        implementation 'com.github.commonprogress:PushAll:Tag'
@@ -58,20 +58,6 @@
 	    <version>Tag</version>
 	</dependency>
 
-```
-
-代码中需要实现的步骤：
-
-```
-PushRegisterSet 推送注册操作类
-PushRegisterSet.applicationInit()初始化
-PushRegisterSet.registerInitPush()注册
-
-```
-
-```
-PushRegisterSet.registerInitPush()注册,可以放在application也可以放在app第一个界面中
-PushReceiveService 自己实现的推送接收Service 推送注册结果就收类，还有推送事件到达类
 ```
 
 #### push_config.gradle 配置各大推送平台key
@@ -108,6 +94,53 @@ PushReceiveService 自己实现的推送接收Service 推送注册结果就收�
 
 ```
 
+####  初始化操作：主module添加华为的平台导出的 agconnect-services.json
+
+```
+PushRegisterSet 推送注册操作类
+1,项目的Application onCreate方法添加PushRegisterSet.applicationInit(this);初始化
+2,项目的启动类onCreate方法添加 PushRegisterSet.registerInitPush(this)注册获取token
+
+```
+
+```
+AndroidManifest.xml 添加：二选一
+  <!-- 自定义的PushReceiveJobService 是继承PushMessageService -->
+方法一
+ <service android:name=".service.PushReceiveJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+方法二
+ 注册静态广播 集成 PushMessageReceiver
+
+ /**
+     * 获取新的token new token
+     *
+     * @param platform
+     * @param regId
+     */
+    protected abstract void onPushNewToken(String regId, String platform);
+
+    /**
+     * 接收到通知消息 暂时不支持
+     *
+     * @param throughMessage
+     * @param platform
+     */
+    protected abstract void onReceiveNotifiMessage(MessageDataBean throughMessage, String platform);
+
+    /**
+     * 接收到透传消息的 小米 华为 支持
+     *
+     * @param throughMessage
+     * @param platform
+     */
+    protected abstract void onReceiveThroughMessage(MessageDataBean throughMessage, String platform);
+
+```
+
 #### 各大推送平台服务端简单demo
 https://github.com/lingduzuobiao123/PushSenderSample 
 
@@ -136,7 +169,7 @@ https://github.com/lingduzuobiao123/PushSenderSample
 ```
 -dontoptimize
 -dontpreverify
--ignorewarning
+-ignorewarnings
 -keepattributes *Annotation*
 -keepattributes Exceptions
 -keepattributes InnerClasses
