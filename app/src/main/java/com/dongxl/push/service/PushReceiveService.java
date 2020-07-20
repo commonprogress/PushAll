@@ -122,6 +122,7 @@ public class PushReceiveService extends Service {
             stopSelf();
         } else {
             LogUtils.i(TAG, "throughMessageReceived 555 messageData:" + messageData.toString());
+
             sendHandlerStopSelf(delayMillis);
         }
     }

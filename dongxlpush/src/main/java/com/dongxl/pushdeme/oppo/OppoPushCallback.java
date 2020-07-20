@@ -2,21 +2,17 @@ package com.dongxl.pushdeme.oppo;
 
 import android.content.Context;
 
-import com.coloros.mcssdk.callback.PushAdapter;
-import com.coloros.mcssdk.mode.NotificatoinStatus;
-import com.coloros.mcssdk.mode.PushStatus;
-import com.coloros.mcssdk.mode.SubscribeResult;
 import com.dongxl.pushdeme.PushConstants;
 import com.dongxl.pushdeme.ServiceManager;
 import com.dongxl.pushdeme.bean.PushDataBean;
-
-import java.util.Arrays;
-import java.util.List;
+import com.dongxl.pushdeme.utils.LogUtils;
+import com.heytap.msp.push.HeytapPushManager;
+import com.heytap.msp.push.callback.ICallBackResultService;
 
 /**
  * oppo 操作相关的回调
  */
-public class OppoPushCallback extends PushAdapter {
+public class OppoPushCallback implements ICallBackResultService {
     private Context mContext;
 
     public OppoPushCallback() {
@@ -41,6 +37,9 @@ public class OppoPushCallback extends PushAdapter {
         if (null != mContext) {
             ServiceManager.sendPushDataToService(mContext, pushData, PushConstants.PushPlatform.PLATFORM_OPPO);
         }
+        if (null != pushData) {
+            LogUtils.i("OppoPushCallback", "OppoPushCallback Result is called. 111: ==pushData" + pushData.toString());
+        }
     }
 
     /**
@@ -52,6 +51,7 @@ public class OppoPushCallback extends PushAdapter {
         final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_REGISTER, code);
         String reason;
         if (code == OppoResultCode.OPPO_SUCCESS) {
+            HeytapPushManager.setRegisterID(msg);
             pushData.setRegId(msg);
             reason = "OPPO RegisterResult SUCCESS mRegId=" + msg;
         } else {
@@ -80,149 +80,8 @@ public class OppoPushCallback extends PushAdapter {
     }
 
     /**
-     * 获取别名
-     *
-     * @param code
-     * @param list
-     */
-    @Override
-    public void onGetAliases(int code, List<SubscribeResult> list) {
-        final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_OTHER, code);
-        String reason;
-        if (code == OppoResultCode.OPPO_SUCCESS) {
-            pushData.setAlias(Arrays.toString(list.toArray()));
-            reason = "OPPO GetAliases Result SUCCESS msg=" + Arrays.toString(list.toArray());
-        } else {
-            reason = "OPPO GetAliases Result Failed code=" + code;
-        }
-        pushData.setReason(reason);
-        sendPushDataToService(pushData);
-    }
-
-    @Override
-    public void onSetAliases(int code, List<SubscribeResult> list) {
-        final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_ALIAS, code);
-        String reason;
-        if (code == OppoResultCode.OPPO_SUCCESS) {
-            pushData.setAlias(Arrays.toString(list.toArray()));
-            reason = "OPPO SetAliases Result SUCCESS msg=" + Arrays.toString(list.toArray());
-        } else {
-            reason = "OPPO SetAliases Result Failed code=" + code;
-        }
-        pushData.setReason(reason);
-        sendPushDataToService(pushData);
-    }
-
-    @Override
-    public void onUnsetAliases(int code, List<SubscribeResult> list) {
-        final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_UNALIAS, code);
-        String reason;
-        if (code == OppoResultCode.OPPO_SUCCESS) {
-            pushData.setAlias(Arrays.toString(list.toArray()));
-            reason = "OPPO UnsetAliases Result SUCCESS msg=" + Arrays.toString(list.toArray());
-        } else {
-            reason = "OPPO UnsetAliases Result Failed code=" + code;
-        }
-        pushData.setReason(reason);
-        sendPushDataToService(pushData);
-    }
-
-    /**
-     * 设置用户名
-     * @param code
-     * @param list
-     */
-    @Override
-    public void onSetUserAccounts(int code, List<SubscribeResult> list) {
-        final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_ACCOUNT, code);
-        String reason;
-        if (code == OppoResultCode.OPPO_SUCCESS) {
-            pushData.setAccount(Arrays.toString(list.toArray()));
-            reason = "OPPO SetUserAccounts Result SUCCESS msg=" + Arrays.toString(list.toArray());
-        } else {
-            reason = "OPPO SetUserAccounts Result Failed code=" + code;
-        }
-        pushData.setReason(reason);
-        sendPushDataToService(pushData);
-    }
-
-    @Override
-    public void onUnsetUserAccounts(int code, List<SubscribeResult> list) {
-        final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_UNACCOUNT, code);
-        String reason;
-        if (code == OppoResultCode.OPPO_SUCCESS) {
-            pushData.setAccount(Arrays.toString(list.toArray()));
-            reason = "OPPO UnsetUserAccounts Result SUCCESS msg=" + Arrays.toString(list.toArray());
-        } else {
-            reason = "OPPO UnsetUserAccounts Result Failed code=" + code;
-        }
-        pushData.setReason(reason);
-        sendPushDataToService(pushData);
-    }
-
-    @Override
-    public void onGetUserAccounts(int code, List<SubscribeResult> list) {
-        final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_OTHER, code);
-        String reason;
-        if (code == OppoResultCode.OPPO_SUCCESS) {
-            pushData.setAccount(Arrays.toString(list.toArray()));
-            reason = "OPPO GetUserAccounts Result SUCCESS msg=" + Arrays.toString(list.toArray());
-        } else {
-            reason = "OPPO GetUserAccounts Result Failed code=" + code;
-        }
-        pushData.setReason(reason);
-        sendPushDataToService(pushData);
-    }
-
-    /**
-     * 设置topic
-     * @param code
-     * @param list
-     */
-    @Override
-    public void onSetTags(int code, List<SubscribeResult> list) {
-        final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_TOPIC, code);
-        String reason;
-        if (code == OppoResultCode.OPPO_SUCCESS) {
-            pushData.setTopic(Arrays.toString(list.toArray()));
-            reason = "OPPO SetTags Result SUCCESS msg=" + Arrays.toString(list.toArray());
-        } else {
-            reason = "OPPO SetTags Result Failed code=" + code;
-        }
-        pushData.setReason(reason);
-        sendPushDataToService(pushData);
-    }
-
-    @Override
-    public void onUnsetTags(int code, List<SubscribeResult> list) {
-        final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_UNTOPIC, code);
-        String reason;
-        if (code == OppoResultCode.OPPO_SUCCESS) {
-            pushData.setTopic(Arrays.toString(list.toArray()));
-            reason = "OPPO UnsetTags Result SUCCESS msg=" + Arrays.toString(list.toArray());
-        } else {
-            reason = "OPPO UnsetTags Result Failed code=" + code;
-        }
-        pushData.setReason(reason);
-        sendPushDataToService(pushData);
-    }
-
-    @Override
-    public void onGetTags(int code, List<SubscribeResult> list) {
-        final PushDataBean pushData = new PushDataBean(PushConstants.HandlerWhat.WHAT_PUSH_OTHER, code);
-        String reason;
-        if (code == OppoResultCode.OPPO_SUCCESS) {
-            pushData.setTopic(Arrays.toString(list.toArray()));
-            reason = "OPPO GetTags Result SUCCESS msg=" + Arrays.toString(list.toArray());
-        } else {
-            reason = "OPPO GetTags Result Failed code=" + code;
-        }
-        pushData.setReason(reason);
-        sendPushDataToService(pushData);
-    }
-
-    /**
      * Push状态正常
+     *
      * @param code
      * @param status
      */
@@ -242,6 +101,7 @@ public class OppoPushCallback extends PushAdapter {
 
     /**
      * 通知状态
+     *
      * @param code
      * @param status
      */
@@ -261,6 +121,7 @@ public class OppoPushCallback extends PushAdapter {
 
     /**
      * push时间
+     *
      * @param code
      * @param result
      */

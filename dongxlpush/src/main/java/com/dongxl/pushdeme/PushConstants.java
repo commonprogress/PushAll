@@ -21,6 +21,7 @@ public class PushConstants {
     public static final String MEIZU_APP_KEY = BuildConfig.MEIZUPUSH_APPKEY;
 
     public static final String KEY_PUSH_DATA = "push_data";
+    public static final String KEY_IS_FOREGROUND = "is_foreground";
 
     public static class PushPlatform {
         public static final String PLATFORM_XIAOMI = "xiaomi";

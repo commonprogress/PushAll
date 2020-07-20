@@ -11,16 +11,18 @@
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <!-- Optional. Required for location feature -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在 6.0 系统上的层叠窗口权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /><!-- Android Q后台定位权限-->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <!--小米-->
     <!-- the following 2 com.xiaomi.mipushdemo should be changed to your package name -->
@@ -40,6 +42,7 @@
 
     <!--oppo 推送-->
     <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
+    <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE"/>
 
     <!--meizu 推送-->
     <!-- 兼容 Flyme5 以下版本，魅族内部接入 PushSDK 必填，不然无法收到消息-->
@@ -47,10 +50,9 @@
     <permission
         android:name="${applicationId}.push.permission.MESSAGE"
         android:protectionLevel="signature" />
+    <uses-permission android:name="${applicationId}.push.permission.MESSAGE" />
     <!-- 兼容 Flyme3 配置权限-->
-    <uses-permission android:name="${applicationId}.push.permission.MESSAGE"></uses-permission>
     <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
-
     <permission
         android:name="${applicationId}.permission.C2D_MESSAGE"
         android:protectionLevel="signature"></permission>
@@ -126,23 +128,14 @@
         <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="appid=${HUAWEIPUSH_APPID}"></meta-data>
+        <meta-data
+            android:name="push_kit_auto_init_enabled"
+            android:value="false" />
         <!--配置华为移动服务版本 如果您的应用使用以下能力： 1，获取unionId。2， 使用getPurchaseInfo接口  请在application节点下增加"com.huawei.hms.version"信息-->
         <!--<meta-data
             android:name="com.huawei.hms.version"
             android:value="2.6.1">
         </meta-data>-->
-        <!--BridgeActivity定义了HMS SDK中一些跳转所需要的透明页面-->
-        <activity
-            android:name="com.huawei.hms.activity.BridgeActivity"
-            android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.Translucent">
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent" />
-        </activity>
 
         <!--用于HMS SDK引导升级HMS APK，提供给系统安装器读取升级文件-->
         <provider
@@ -199,7 +192,7 @@
         <service
             android:name="com.dongxl.pushdeme.huawei.HuaweiPushService"
             android:enabled="true"
-            android:exported="true"
+            android:exported="false"
             android:permission="${applicationId}.permission.PROCESS_PUSH_MSG"
             android:process=":HmsMessageService">
             <intent-filter>
@@ -221,6 +214,17 @@
                 <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
             </intent-filter>
         </service>
+
+        <service android:name="com.dongxl.pushdeme.oppo.OppoPushMsgService"
+            android:permission="com.heytap.mcs.permission.SEND_PUSH_MESSAGE">
+            <intent-filter>
+                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>
+                <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE" />
+            </intent-filter>
+        </service>
+
+
+
         <!--oppo push end-->
 
         <!--vivo push end-->
@@ -270,11 +274,31 @@
         <!--meizu push end-->
 
         <!-- jpush ===start -->
-        <!-- Rich push 核心功能 since 2.0.6 -->
+        <!-- SDK 核心功能-->
+        <!-- 若您的业务中有使用极光富媒体功能，或者极光早上好功能，需要把此 Activity 的 exported 设置成 true。 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="false"
-            android:theme="@style/MyDialogStyle" /> <!-- Required SDK核心功能 -->
+            android:theme="@style/MyDialogStyle">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </activity>
+
+        <!-- since 3.6.0 -->
+        <activity android:name="cn.jpush.android.service.DActivity"
+            android:enabled="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:taskAffinity="jpush.custom">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.DActivity"/>
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -342,7 +366,10 @@
         <receiver
             android:name="cn.jpush.android.service.AlarmReceiver"
             android:exported="false" />
-        <!-- since 3.3.0 Required SDK核心功能 -->
+
+        <!-- 3.5.0新增，用于定时展示功能 -->
+        <receiver android:name="cn.jpush.android.service.SchedulerReceiver" android:exported="false"/>
+
         <activity
             android:name="cn.jpush.android.service.JNotifyActivity"
             android:exported="true"

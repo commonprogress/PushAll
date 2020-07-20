@@ -22,7 +22,7 @@
 
 -dontoptimize
 -dontpreverify
--ignorewarning
+-ignorewarnings
 -keepattributes *Annotation*
 -keepattributes Exceptions
 -keepattributes InnerClasses

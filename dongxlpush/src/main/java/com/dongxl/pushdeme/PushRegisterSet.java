@@ -12,6 +12,7 @@ import com.dongxl.pushdeme.utils.LogUtils;
 import com.dongxl.pushdeme.utils.PhoneUtils;
 import com.dongxl.pushdeme.utils.RomUtil;
 import com.dongxl.pushdeme.vivo.VivoPushOperation;
+import com.heytap.msp.push.HeytapPushManager;
 import com.huawei.hms.aaid.HmsInstanceId;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.vivo.push.IPushActionListener;
@@ -244,8 +245,13 @@ public class PushRegisterSet {
      */
     private static void oppoRegisterInit(Context context) {
         initOppoPushCallback(context);
-        com.coloros.mcssdk.PushManager.getInstance().register(context.getApplicationContext(),
-                PushConstants.OPPO_APP_KEY, PushConstants.OPPO_APP_SECRET, oppoPushCallback);//setPushCallback接口也可设置callback
+        try {
+            HeytapPushManager.init(context.getApplicationContext(), true);
+            HeytapPushManager.register(context.getApplicationContext(), PushConstants.OPPO_APP_KEY, PushConstants.OPPO_APP_SECRET, oppoPushCallback);//setPushCallback接口也可设置callback
+            HeytapPushManager.requestNotificationPermission();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //        getRegId(context);
     }
 
@@ -286,7 +292,7 @@ public class PushRegisterSet {
                 regId = HMSSharedUtils.getHuaweiToken(context);
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
-                com.coloros.mcssdk.PushManager.getInstance().getRegister();
+                regId = HeytapPushManager.getRegisterID();
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 regId = PushClient.getInstance(context.getApplicationContext()).getRegId();
@@ -322,10 +328,11 @@ public class PushRegisterSet {
                 //不支持
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
-                initOppoPushCallback(context);
-                List<String> list = new ArrayList<>();
-                list.add(alias);
-                com.coloros.mcssdk.PushManager.getInstance().setAliases(list);
+//                initOppoPushCallback(context);
+//                List<String> list = new ArrayList<>();
+//                list.add(alias);
+//                HeytapPushManager.setAliases(list);
+                //不支持
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //unBindAlias 一天内最多调用 100 次，两次调用的间隔需大于 2s
@@ -361,8 +368,9 @@ public class PushRegisterSet {
                 //不支持
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
-                initOppoPushCallback(context);
-                com.coloros.mcssdk.PushManager.getInstance().unsetAlias(alias);
+//                initOppoPushCallback(context);
+//                HeytapPushManager.unsetAlias(alias);
+                //不支持
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //bindAlias 一天内最多调用 100 次，两次调用的间隔需大于 2s
@@ -398,8 +406,9 @@ public class PushRegisterSet {
                 //不支持
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
-                initOppoPushCallback(context);
-                com.coloros.mcssdk.PushManager.getInstance().setUserAccount(account);
+//                initOppoPushCallback(context);
+//                HeytapPushManager.setUserAccount(account);
+                //不支持
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //不支持
@@ -433,10 +442,11 @@ public class PushRegisterSet {
                 //不支持
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
-                initOppoPushCallback(context);
-                List<String> list = new ArrayList<>();
-                list.add(account);
-                com.coloros.mcssdk.PushManager.getInstance().unsetUserAccounts(list);
+//                initOppoPushCallback(context);
+//                List<String> list = new ArrayList<>();
+//                list.add(account);
+//                HeytapPushManager.unsetUserAccounts(list);
+                //不支持
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //不支持
@@ -475,9 +485,9 @@ public class PushRegisterSet {
                 isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
-                initOppoPushCallback(context);
-                com.coloros.mcssdk.PushManager.getInstance().setTags(getTopicKeys(topic/*, topics*/));
-                isSupport = true;
+//                initOppoPushCallback(context);
+//                HeytapPushManager.setTags(getTopicKeys(topic/*, topics*/));
+                isSupport = false;
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //delTopic 一天内最多调用 500 次，两次调用的间隔需大于 2s
@@ -560,9 +570,9 @@ public class PushRegisterSet {
                 isSupport = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
-                initOppoPushCallback(context);
-                com.coloros.mcssdk.PushManager.getInstance().unsetTags(getTopicKeys(topic/*, topics*/));
-                isSupport = true;
+//                initOppoPushCallback(context);
+//                HeytapPushManager.unsetTags(getTopicKeys(topic/*, topics*/));
+                isSupport = false;
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //与setTopic 一天内最多调用 500 次，两次调用的间隔需大于 2s
@@ -636,7 +646,7 @@ public class PushRegisterSet {
                 weekDays.add(4);
                 weekDays.add(5);
                 weekDays.add(6);
-                com.coloros.mcssdk.PushManager.getInstance().setPushTime(weekDays, startHour, startMin, endHour, endMin);
+                HeytapPushManager.setPushTime(weekDays, startHour, startMin, endHour, endMin);
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
                 //不支持
@@ -661,6 +671,7 @@ public class PushRegisterSet {
 
     /**
      * 检查推送是否打开
+     *
      * @param context
      * @return 默认返回true
      */
@@ -677,7 +688,7 @@ public class PushRegisterSet {
                 isOn = HuaweiPushRegister.checkTurnOnOrOffHuaweiPush(context);
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
-                com.coloros.mcssdk.PushManager.getInstance().getPushStatus();
+                HeytapPushManager.getPushStatus();
                 isOn = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
@@ -688,13 +699,14 @@ public class PushRegisterSet {
                 isOn = true;
                 break;
             case PushConstants.PushPlatform.PLATFORM_JPSUH:
-                isOn = !JPushInterface.isPushStopped(context);;
+                isOn = !JPushInterface.isPushStopped(context);
+                ;
                 break;
             default:
                 isOn = false;
                 break;
         }
-       return isOn;
+        return isOn;
     }
 
     /**
@@ -709,9 +721,9 @@ public class PushRegisterSet {
         }
         switch (getSupportPushPlatform(context)) {
             case PushConstants.PushPlatform.PLATFORM_XIAOMI:
-                if(isOn){
+                if (isOn) {
                     MiPushClient.resumePush(context, null);
-                }else{
+                } else {
                     MiPushClient.pausePush(context, null);
                 }
                 break;
@@ -719,16 +731,16 @@ public class PushRegisterSet {
                 HuaweiPushRegister.turnOnOrOffHuaweiPush(context, isOn);
                 break;
             case PushConstants.PushPlatform.PLATFORM_OPPO:
-                if(isOn){
-                    com.coloros.mcssdk.PushManager.getInstance().resumePush();
-                }else{
-                    com.coloros.mcssdk.PushManager.getInstance().pausePush();
+                if (isOn) {
+                    HeytapPushManager.resumePush();
+                } else {
+                    HeytapPushManager.pausePush();
                 }
                 break;
             case PushConstants.PushPlatform.PLATFORM_VIVO:
-                if(isOn){
+                if (isOn) {
                     new VivoPushOperation().turnOnPush(context);
-                }else{
+                } else {
                     new VivoPushOperation().turnOffPush(context);
                 }
                 break;
@@ -736,9 +748,9 @@ public class PushRegisterSet {
                 com.meizu.cloud.pushsdk.PushManager.switchPush(context, PushConstants.MEIZU_APP_ID, PushConstants.MEIZU_APP_KEY, com.meizu.cloud.pushsdk.PushManager.getPushId(context), isOn);
                 break;
             case PushConstants.PushPlatform.PLATFORM_JPSUH:
-                if(isOn){
+                if (isOn) {
                     JPushInterface.resumePush(context);
-                }else{
+                } else {
                     JPushInterface.stopPush(context);
                 }
                 break;
@@ -825,7 +837,7 @@ public class PushRegisterSet {
             return PushConstants.PushPlatform.PLATFORM_HUAWEI;
         } else if (PushClient.getInstance(mContext).isSupport()) {
             return PushConstants.PushPlatform.PLATFORM_VIVO;
-        } else if (com.coloros.mcssdk.PushManager.isSupportPush(mContext)) {
+        } else if (RomUtil.isOppo() && HeytapPushManager.isSupportPush()) {
             return PushConstants.PushPlatform.PLATFORM_OPPO;
         } else if (MzSystemUtils.isMeizu(mContext)) {
             return PushConstants.PushPlatform.PLATFORM_FLYME;

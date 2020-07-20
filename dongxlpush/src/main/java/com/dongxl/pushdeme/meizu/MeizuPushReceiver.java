@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 public class MeizuPushReceiver extends MzPushMessageReceiver {
+    private static final String TAG = MeizuPushReceiver.class.getSimpleName();
 
     /**
      * 发送消息到接收服务

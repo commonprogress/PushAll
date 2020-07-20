@@ -1,13 +1,19 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.huawei.agconnect'
 
+repositories {
+    flatDir {
+        dirs 'libs', 'jniLibs', '../app/libs', '../app/jniLibs'
+    }
+}
+
 android {
     compileSdkVersion 28
 
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -58,20 +64,32 @@ android {
         doNotStrip '*/mips/*.so'
         doNotStrip '*/mips64/*.so'
     }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:core:1.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     /*华为推送引用*/
-    implementation 'com.huawei.hms:push:3.0.2.300'
-    implementation 'com.huawei.hms:opendevice:3.0.2.300'
+    implementation 'com.huawei.hms:push:4.0.4.301'
+    implementation 'com.huawei.hms:opendevice:4.0.4.301'
     /*魅族*/
-    implementation 'com.meizu.flyme.internet:push-internal:3.8.4'
+    implementation 'com.meizu.flyme.internet:push-internal:3.9.7'
     /*极光*/
 //    implementation 'cn.jiguang.sdk:jcore:2.1.6'  // 此处以JCore 2.1.6 版本为例。
 //    implementation 'cn.jiguang.sdk:jpush:3.3.9'  // 此处以JPush 3.3.9 版本为例。
+
+    //oppo推送
+    implementation(name: 'com.heytap.msp', ext: 'aar')
+    //vivo
+    implementation(name: 'vivo_pushsdk-v2.9.0.0', ext: 'aar')
 }

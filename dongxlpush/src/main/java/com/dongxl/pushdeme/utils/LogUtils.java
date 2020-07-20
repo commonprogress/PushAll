@@ -7,7 +7,7 @@ import com.dongxl.pushdeme.BuildConfig;
 
 public class LogUtils {
 
-    public static String dufaultTag = "dongxl";
+    public static String dufaultTag = "push";
 
     public static void v(String msg) {
         if (!BuildConfig.DEBUG) {
