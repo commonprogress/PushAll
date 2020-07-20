@@ -16,7 +16,7 @@
         tools:replace="android:name,android:allowBackup,android:label,android:icon"
         >
         <service
-            android:name=".service.PushReceiveService"
+            android:name=".service.DemoPushReceiveService"
             android:enabled="true"
             android:exported="true"></service>
 

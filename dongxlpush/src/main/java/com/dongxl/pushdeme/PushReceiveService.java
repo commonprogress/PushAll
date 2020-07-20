@@ -1,29 +1,22 @@
-package com.dongxl.push.service;
+package com.dongxl.pushdeme;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
-import android.os.IBinder;
 import android.text.TextUtils;
 
-import com.dongxl.pushdeme.PushConstants;
-import com.dongxl.pushdeme.PushRegisterSet;
+import androidx.lifecycle.LifecycleService;
+
 import com.dongxl.pushdeme.bean.MessageDataBean;
 import com.dongxl.pushdeme.bean.PushDataBean;
 import com.dongxl.pushdeme.utils.LogUtils;
 
-public class PushReceiveService extends Service {
+public abstract class PushReceiveService extends LifecycleService {
     private final static String TAG = PushReceiveService.class.getSimpleName();
     private final static long delayMillis = 20 * 1000; //秒
     private Handler mHandler = new Handler();
 
     public PushReceiveService() {
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
@@ -61,6 +54,7 @@ public class PushReceiveService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
         PushDataBean pushData = null == intent ? null : (PushDataBean) intent.getSerializableExtra(PushConstants.KEY_PUSH_DATA);
         if (null == pushData) {
             stopSelf(startId);
@@ -69,7 +63,6 @@ public class PushReceiveService extends Service {
             pushResultOperation(pushData);
             return Service.START_REDELIVER_INTENT;
         }
-
     }
 
     private void pushResultOperation(PushDataBean pushData) {
@@ -81,15 +74,14 @@ public class PushReceiveService extends Service {
                 throughMessageReceived(pushData.getThroughMessage(), platform);
                 break;
             case PushConstants.HandlerWhat.WHAT_NOTIFI_MESSAGE_ARRIVE:
-                throughMessageReceived(pushData.getThroughMessage(), platform);
-                clearNotifiOfArrived(pushData.getThroughMessage(), platform);
+                onReceiveNotifiMessage(pushData.getThroughMessage(), platform);
                 break;
             case PushConstants.HandlerWhat.WHAT_PUSH_REGISTER:
                 if (TextUtils.isEmpty(pushData.getRegId())) {
                     LogUtils.i(TAG, "pushResultOperation 555: regId is empty: " + pushData.getRegId());
                     stopSelf();
                 } else {
-                    thirdPushRegister(platform, pushData.getRegId());
+                    onPushNewToken(pushData.getRegId(), platform);
                     sendHandlerStopSelf(delayMillis / 3);
                 }
                 break;
@@ -98,16 +90,6 @@ public class PushReceiveService extends Service {
                 stopSelf();
                 break;
         }
-    }
-
-    /**
-     * 保存regid
-     *
-     * @param platform
-     * @param regId
-     */
-    private void thirdPushRegister(String platform, String regId) {
-
     }
 
     /**
@@ -122,10 +104,34 @@ public class PushReceiveService extends Service {
             stopSelf();
         } else {
             LogUtils.i(TAG, "throughMessageReceived 555 messageData:" + messageData.toString());
-
+            onReceiveThroughMessage(messageData, platform);
             sendHandlerStopSelf(delayMillis);
         }
     }
+
+    /**
+     * 获取新的token new token
+     *
+     * @param platform
+     * @param regId
+     */
+    protected abstract void onPushNewToken(String regId, String platform);
+
+    /**
+     * 接收到通知消息 暂时不支持
+     *
+     * @param throughMessage
+     * @param platform
+     */
+    protected abstract void onReceiveNotifiMessage(MessageDataBean throughMessage, String platform);
+
+    /**
+     * 接收到透传消息的 小米 华为 支持
+     *
+     * @param throughMessage
+     * @param platform
+     */
+    protected abstract void onReceiveThroughMessage(MessageDataBean throughMessage, String platform);
 
     /**
      * 清空通知消息
@@ -133,7 +139,7 @@ public class PushReceiveService extends Service {
      * @param messageData
      * @param platform
      */
-    private void clearNotifiOfArrived(MessageDataBean messageData, String platform) {
+    protected void clearNotifiOfArrived(MessageDataBean messageData, String platform) {
         int notifyId = null == messageData ? 0 : messageData.getNotifyId();
         LogUtils.i(TAG, "clearNotifiOfArrived 555: notifyId : " + notifyId);
         PushRegisterSet.clearPushNotification(this, platform, notifyId);

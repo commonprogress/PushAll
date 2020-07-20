@@ -700,7 +700,6 @@ public class PushRegisterSet {
                 break;
             case PushConstants.PushPlatform.PLATFORM_JPSUH:
                 isOn = !JPushInterface.isPushStopped(context);
-                ;
                 break;
             default:
                 isOn = false;
@@ -831,19 +830,22 @@ public class PushRegisterSet {
      */
     private static String getSupportPushPlatform(Context context) {
         Context mContext = context.getApplicationContext();
-        if (RomUtil.isMiui() && MiPushClient.shouldUseMIUIPush(context)) {
+        if (!TextUtils.isEmpty(PushConstants.XIAOMI_APP_ID) && RomUtil.isMiui() && MiPushClient.shouldUseMIUIPush(context)) {
             return PushConstants.PushPlatform.PLATFORM_XIAOMI;
-        } else if (RomUtil.isEmui()) {
+        } else if (!TextUtils.isEmpty(PushConstants.HUAWEI_APP_ID) && RomUtil.isEmui()) {
             return PushConstants.PushPlatform.PLATFORM_HUAWEI;
-        } else if (PushClient.getInstance(mContext).isSupport()) {
+        } else if (!TextUtils.isEmpty(PushConstants.VIVOPUSH_APPID) && PushClient.getInstance(mContext).isSupport()) {
             return PushConstants.PushPlatform.PLATFORM_VIVO;
-        } else if (RomUtil.isOppo() && HeytapPushManager.isSupportPush()) {
+        } else if (!TextUtils.isEmpty(PushConstants.OPPO_APP_ID) && RomUtil.isOppo() && HeytapPushManager.isSupportPush()) {
             return PushConstants.PushPlatform.PLATFORM_OPPO;
-        } else if (MzSystemUtils.isMeizu(mContext)) {
+        } else if (!TextUtils.isEmpty(PushConstants.MEIZU_APP_ID) && MzSystemUtils.isMeizu(mContext)) {
             return PushConstants.PushPlatform.PLATFORM_FLYME;
         } else {
-            return PushConstants.PushPlatform.PLATFORM_JPSUH;
-//            return PushConstants.PushPlatform.PLATFORM_OTHER;
+            if (!TextUtils.isEmpty(PushConstants.JPUSH_APPKEY)) {
+                return PushConstants.PushPlatform.PLATFORM_JPSUH;
+            } else {
+                return PushConstants.PushPlatform.PLATFORM_OTHER;
+            }
         }
     }
 }

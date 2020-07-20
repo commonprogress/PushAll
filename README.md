@@ -35,6 +35,9 @@
 ### 引用Push aar 
 ```
 	dependencies {
+            implementation 'androidx.appcompat:appcompat:1.1.0'
+            implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+            implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 	        implementation 'com.github.commonprogress:PushAll:Tag'
 	}
 
@@ -65,7 +68,8 @@
 /*配置账号相关*/
         ext {
             main_packagename = "com.dongxl.push" //程序主包名，选填
-            pushreceiveservice = "com.dongxl.push.service.PushReceiveService" //自己实现的推送接收Service 
+            pushreceive_mode = "1" //选填，只有值为 1 时 继承PushMessageService 否则 继承PushReceiveService
+            pushreceiveservice = "com.dongxl.push.service.PushReceiveService" //自己实现的推送接收action
             
         //极光
             jpush_appkey = "46b514bd1b982739ec4d2f6f" //极光key 
@@ -112,9 +116,17 @@ AndroidManifest.xml 添加：二选一
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
+<!-- 自定义的PushReceiveJobService 是继承PushMessageService -->
+ <service
+            android:name=".service.PushReceiveService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+
 方法二
  注册静态广播 集成 PushMessageReceiver
 
+实现以下方法 回调 token 通知消息 透传消息 
  /**
      * 获取新的token new token
      *

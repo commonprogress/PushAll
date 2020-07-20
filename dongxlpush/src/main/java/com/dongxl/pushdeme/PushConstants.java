@@ -11,6 +11,14 @@ public class PushConstants {
     //huawei
     public static final String HUAWEI_APP_ID = BuildConfig.HUAWEIPUSH_APPID;
 
+    //jpush 极光
+    public static final String JPUSH_APPKEY = BuildConfig.JPUSH_APPKEY;
+    public static final String JPUSH_CHANNEL = BuildConfig.JPUSH_CHANNEL;
+
+    //vivo
+    public static final String VIVOPUSH_APPID = BuildConfig.VIVOPUSH_APPID;
+    public static final String VIVOPUSH_APPKEY = BuildConfig.VIVOPUSH_APPKEY;
+
     //oppp
     public static final String OPPO_APP_ID = BuildConfig.OPPOPUSH_APPID;
     public static final String OPPO_APP_KEY = BuildConfig.OPPOPUSH_APPKEY;

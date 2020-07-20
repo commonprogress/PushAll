@@ -26,6 +26,7 @@ public class ServiceManager {
             pkgName = MAIN_PKG;
         }
         if (null != context && null != pushData) {
+
             pushData.setPlatform(platform);
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -34,19 +35,19 @@ public class ServiceManager {
             ComponentName componentName = new ComponentName(pkgName, BuildConfig.PUSHRECEIVESERVICE);
             intent.setComponent(componentName);
 
-            //方法一
-            try {
-                context.startService(intent);
-            } catch (Exception e) {
-                LogUtils.e(TAG, "sendPushDataToService is Exception. 222 " + e.getMessage());
-                intent.putExtra(PushConstants.KEY_IS_FOREGROUND, true);
-                ContextCompat.startForegroundService(context, intent);
+            if ("1".equals(BuildConfig.PUSHRECEIVE_MODE)) {
+                //方法二
+                PushMessageService.enqueueWork(context, componentName, intent);
+            } else {
+                //方法一
+                try {
+                    context.startService(intent);
+                } catch (Exception e) {
+                    LogUtils.e(TAG, "sendPushDataToService is Exception. 222 " + e.getMessage());
+                    intent.putExtra(PushConstants.KEY_IS_FOREGROUND, true);
+                    ContextCompat.startForegroundService(context, intent);
+                }
             }
-
-
-            //方法二
-//            PushMessageService.enqueueWork(context, componentName, intent);
-
 
             Intent broadcastIntent = new Intent();
             broadcastIntent.putExtra(PushConstants.KEY_PUSH_DATA, pushData);

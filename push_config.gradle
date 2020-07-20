@@ -1,5 +1,6 @@
 ext {
     main_packagename = "com.dongxl.push"
+    pushreceive_mode = "1"
     pushreceiveservice = "com.dongxl.push.service.PushReceiveService"
 
     jpush_appkey = "46b514bd1b982739ec4d2f6f"
