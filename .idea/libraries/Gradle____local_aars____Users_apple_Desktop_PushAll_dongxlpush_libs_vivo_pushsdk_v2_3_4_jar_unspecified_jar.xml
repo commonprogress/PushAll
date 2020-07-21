@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: __local_aars__:/Users/apple/Desktop/PushAll/dongxlpush/libs/vivo_pushsdk_v2.3.4.jar:unspecified@jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/dongxlpush/libs/vivo_pushsdk_v2.3.4.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

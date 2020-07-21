@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: __local_aars__:/Users/mac8/Downloads/jpush-android-3.3.4-release/example/dongxlpush/libs/jcore-android-2.1.2.jar:unspecified@jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/dongxlpush/libs/jcore-android-2.1.2.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
