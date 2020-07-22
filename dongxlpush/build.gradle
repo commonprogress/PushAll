@@ -1,5 +1,11 @@
 apply plugin: 'com.android.library'
+//apply from: 'fat-aar.gradle'
+//apply from: 'https://raw.githubusercontent.com/adwiv/android-fat-aar/master/fat-aar.gradle'
+//https://github.com/kezong/fat-aar-android
+apply plugin: 'com.kezong.fat-aar'
 apply plugin: 'com.huawei.agconnect'
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.commonprogress'
 
 repositories {
     flatDir {
@@ -55,7 +61,7 @@ android {
 
         ndk {
             //选择要添加的对应 cpu 类型的 .so 库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
     }
@@ -65,6 +71,17 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    //加上jdk1.8设置能解决  Error: Default interface methods are only supported starting with Android N
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 
     packagingOptions {
@@ -91,7 +108,7 @@ dependencies {
 //    implementation 'cn.jiguang.sdk:jpush:3.3.9'  // 此处以JPush 3.3.9 版本为例。
 
     //oppo推送
-    implementation(name: 'com.heytap.msp', ext: 'aar')
+    embed(name: 'com.heytap.msp', ext: 'aar')
     //vivo
-    implementation(name: 'vivo_pushsdk-v2.9.0.0', ext: 'aar')
+    embed(name: 'vivo_pushsdk-v2.9.0.0', ext: 'aar')
 }

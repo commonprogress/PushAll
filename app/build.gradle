@@ -28,6 +28,16 @@ android {
         }
     }
 
+    //加上jdk1.8设置能解决  Error: Default interface methods are only supported starting with Android N
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -39,6 +49,12 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-//    implementation 'com.github.commonprogress:PushAll:v1.4.0'
+//    implementation(name: 'dongxlpush-release', ext: 'aar')
+//    /*华为推送引用*/
+//    implementation 'com.huawei.hms:push:4.0.4.301'
+//    implementation 'com.huawei.hms:opendevice:4.0.4.301'
+//    /*魅族*/
+//    implementation 'com.meizu.flyme.internet:push-internal:3.9.7'
+//    implementation 'com.github.commonprogress:PushAll:v1.4.4'
     implementation project(path: ':dongxlpush')
 }
