@@ -50,6 +50,7 @@
 -keep class com.huawei.updatesdk.**{*;}
 -keep class com.huawei.hms.**{*;}
 -keep class com.huawei.android.hms.agent.**{*;}
+-keep class com.huawei.hianalytics.**{*;}
 
 #=================  vivo push  =================
 -dontwarn com.vivo.push.**

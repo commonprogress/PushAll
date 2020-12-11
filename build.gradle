@@ -12,7 +12,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
-        classpath 'com.huawei.agconnect:agcp:1.0.0.300'
+        classpath 'com.huawei.agconnect:agcp:1.4.1.300'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' // Add this line
         classpath 'com.kezong:fat-aar:1.2.15'
     }

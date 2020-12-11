@@ -3,7 +3,7 @@ package com.dongxl.pushdeme.bean;
 import java.io.Serializable;
 
 public class PushDataBean implements Serializable {
-
+    private static final long serialVersionUID = 1L;
     /**
      * 推送平台 小米 华为等
      */

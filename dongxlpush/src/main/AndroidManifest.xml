@@ -42,7 +42,7 @@
 
     <!--oppo 推送-->
     <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
-    <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE"/>
+    <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE" />
 
     <!--meizu 推送-->
     <!-- 兼容 Flyme5 以下版本，魅族内部接入 PushSDK 必填，不然无法收到消息-->
@@ -67,8 +67,7 @@
     <!-- Required -->
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
 
-    <application
-        >
+    <application>
         <!-- xiaomipush ===start -->
         <!-- 这里将XMPushService和PingReceiver定义在了pushservice进程中，您也可以配置其运行在任意进程。如果没有配置android:process这个属性，那么它们将运行在应用的主进程中。 -->
         <service
@@ -128,67 +127,16 @@
         <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="appid=${HUAWEIPUSH_APPID}"></meta-data>
+        <!--一种是通过HmsMessaging类提供的setAutoInitEnabled(boolean enable) 另一种如下-->
         <meta-data
             android:name="push_kit_auto_init_enabled"
-            android:value="false" />
-        <!--配置华为移动服务版本 如果您的应用使用以下能力： 1，获取unionId。2， 使用getPurchaseInfo接口  请在application节点下增加"com.huawei.hms.version"信息-->
-        <!--<meta-data
-            android:name="com.huawei.hms.version"
-            android:value="2.6.1">
-        </meta-data>-->
-
-        <!--用于HMS SDK引导升级HMS APK，提供给系统安装器读取升级文件-->
-        <provider
-            android:name="com.huawei.hms.update.provider.UpdateProvider"
-            android:authorities="${applicationId}.hms.update.provider"
-            android:exported="false"
-            android:grantUriPermissions="true" />
-        <!--AppUpdateActivity和PackageInstallerActivity是应用自升级接口所需要使用的页面-->
-        <activity
-            android:name="com.huawei.updatesdk.service.otaupdate.AppUpdateActivity"
-            android:configChanges="orientation|screenSize"
-            android:exported="false"
-            android:theme="@style/upsdkDlDialog">
-
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent.NoTitleBar" />
-        </activity>
-
-        <activity
-            android:name="com.huawei.updatesdk.support.pm.PackageInstallerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
-            android:theme="@style/upsdkDlDialog">
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent" />
-        </activity>
-        <!--如果应用或者游戏使用了如下接口，HMSAgent.checkUpdate(Activity activity,CheckUpdateHandler callback)，则此步骤必选-->
-        <provider
-            android:name="com.huawei.updatesdk.fileprovider.UpdateSdkFileProvider"
-            android:authorities="${applicationId}.updateSdk.fileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true"></provider>
-
-        <!--接入HMSSDK PUSH模块需要注册该service，不需要开发者处理 如果应用需要在非华为设备上使用PUSH，需要声明HmsMsgService -->
-        <service
-            android:name="com.huawei.hms.support.api.push.service.HmsMsgService"
-            android:enabled="true"
-            android:exported="true"
-            android:process=":pushservice">
-            <intent-filter>
-                <action android:name="com.huawei.push.msg.NOTIFY_MSG" />
-                <action android:name="com.huawei.push.msg.PASSBY_MSG" />
-            </intent-filter>
-        </service>
+            android:value="true" />
 
         <!-- 华为推送接收类 接入HMSSDK PUSH模块需要注册，第三方相关 :接收Push消息（注册、透传消息、通知栏点击事件）广播，
               此receiver类需要开发者自己创建并继承com.huawei.hms.support.api.push.PushReceiver类，
               参考示例代码中的类：com.huawei.hmsagent.HuaweiPushReceiver${PACKAGE_NAME} 要替换上您应用的包名
               com.jsy.secret   ${applicationId}
               -->
-
         <service
             android:name="com.dongxl.pushdeme.huawei.HuaweiPushService"
             android:enabled="true"
@@ -215,14 +163,14 @@
             </intent-filter>
         </service>
 
-        <service android:name="com.dongxl.pushdeme.oppo.OppoPushMsgService"
+        <service
+            android:name="com.dongxl.pushdeme.oppo.OppoPushMsgService"
             android:permission="com.heytap.mcs.permission.SEND_PUSH_MESSAGE">
             <intent-filter>
-                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>
+                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE" />
                 <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE" />
             </intent-filter>
         </service>
-
 
 
         <!--oppo push end-->
@@ -288,13 +236,14 @@
         </activity>
 
         <!-- since 3.6.0 -->
-        <activity android:name="cn.jpush.android.service.DActivity"
+        <activity
+            android:name="cn.jpush.android.service.DActivity"
             android:enabled="true"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:taskAffinity="jpush.custom">
+            android:taskAffinity="jpush.custom"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.DActivity"/>
+                <action android:name="cn.jpush.android.intent.DActivity" />
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
@@ -368,7 +317,9 @@
             android:exported="false" />
 
         <!-- 3.5.0新增，用于定时展示功能 -->
-        <receiver android:name="cn.jpush.android.service.SchedulerReceiver" android:exported="false"/>
+        <receiver
+            android:name="cn.jpush.android.service.SchedulerReceiver"
+            android:exported="false" />
 
         <activity
             android:name="cn.jpush.android.service.JNotifyActivity"

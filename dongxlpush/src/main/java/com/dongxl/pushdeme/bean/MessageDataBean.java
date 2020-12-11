@@ -3,7 +3,7 @@ package com.dongxl.pushdeme.bean;
 import java.io.Serializable;
 
 public class MessageDataBean implements Serializable {
-
+    private static final long serialVersionUID = 1L;
     private String from;
     private String content;
     private long sentTime;

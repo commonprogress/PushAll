@@ -7,13 +7,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion = '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion = '29.0.3'
 
     defaultConfig {
         applicationId "com.dongxl.push"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -43,18 +43,13 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 //    implementation(name: 'dongxlpush-release', ext: 'aar')
-//    /*华为推送引用*/
-//    implementation 'com.huawei.hms:push:4.0.4.301'
-//    implementation 'com.huawei.hms:opendevice:4.0.4.301'
-//    /*魅族*/
-//    implementation 'com.meizu.flyme.internet:push-internal:3.9.7'
-//    implementation 'com.github.commonprogress:PushAll:v1.4.4'
     implementation project(path: ':dongxlpush')
 }
+

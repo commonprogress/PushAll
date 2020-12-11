@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 //apply from: 'fat-aar.gradle'
 //apply from: 'https://raw.githubusercontent.com/adwiv/android-fat-aar/master/fat-aar.gradle'
 //https://github.com/kezong/fat-aar-android
@@ -14,12 +15,11 @@ repositories {
 }
 
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -92,15 +92,14 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test:core:1.2.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test:core:1.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     /*华为推送引用*/
-    implementation 'com.huawei.hms:push:4.0.4.301'
-    implementation 'com.huawei.hms:opendevice:4.0.4.301'
+    implementation 'com.huawei.hms:push:5.0.4.302'
     /*魅族*/
     implementation 'com.meizu.flyme.internet:push-internal:3.9.7'
     /*极光*/
@@ -112,3 +111,15 @@ dependencies {
     //vivo
     embed(name: 'vivo_pushsdk-v2.9.0.0', ext: 'aar')
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+def coreOppoAarFile = file('libs/com.heytap.msp.aar')
+def coreAarFile = file('libs/vivo_pushsdk-v2.9.0.0.aar')
+artifacts {
+    archives coreAarFile
+}
+
+
